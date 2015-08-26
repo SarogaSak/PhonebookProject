@@ -1,0 +1,88 @@
+﻿<Window x:Class="Phonebook.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        WindowStartupLocation="CenterScreen"
+        Title="Телефонная книга" ResizeMode="CanMinimize" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Height="700" Width="942" SizeToContent="Width" Closing="Window_Closing" Activated="Window_Activated" Icon="/Phonebook;component/ico.ico">
+    <Window.Background>
+        <ImageBrush ImageSource="/Phonebook;component/Images/1mVZTzYITo81.jpg" />
+    </Window.Background>
+    <Grid>
+        <TextBox Height="24" HorizontalAlignment="Left" Margin="12,13,0,0" Name="textBoxFIO" VerticalAlignment="Top" Width="314" Text="ФИО" Foreground="Gray" GotFocus="textBoxFIO_GotFocus" LostFocus="textBoxFIO_LostFocus" FontWeight="Bold" FontSize="14" FontFamily="Times New Roman" />
+        <ComboBox Height="24" HorizontalAlignment="Left" Margin="12,40,0,0" Name="comboBoxJob" VerticalAlignment="Top" Width="418" IsEditable="True" Text="Должность" Foreground="Gray" FontWeight="Bold" GotFocus="comboBoxJob_GotFocus" LostFocus="comboBoxJob_LostFocus" KeyUp="comboBoxJob_KeyUp" KeyDown="comboBoxJob_KeyDown" FontSize="14" FontFamily="Times New Roman" />
+        <ComboBox Height="24" HorizontalAlignment="Left" Margin="12,67,0,0" Name="comboBoxEnterprise" VerticalAlignment="Top" Width="418" IsEditable="True" Text="Предприятие" Foreground="Gray" FontWeight="Bold" KeyDown="comboBoxEnterprise_KeyDown" GotFocus="comboBoxEnterprise_GotFocus" LostFocus="comboBoxEnterprise_LostFocus" KeyUp="comboBoxEnterprise_KeyUp" FontSize="14" FontFamily="Times New Roman" />
+        <xctk:MaskedTextBox Margin="330,13,0,0" Width="100" Mask="Тел : 000-00-00" FontSize="14" FontWeight="Bold" HorizontalContentAlignment="Right" Name="maskedtextBoxPhone" HorizontalAlignment="Left" Height="24" VerticalAlignment="Top" FontFamily="Times New Roman"></xctk:MaskedTextBox>
+        <ListView Height="564" HorizontalAlignment="Left" Margin="12,97,0,0" Name="listViewResult" VerticalAlignment="Top" Width="877" MouseDoubleClick="listViewResult_MouseDoubleClick" SelectionMode="Single" Foreground="Black" FontSize="16" FontWeight="Bold" Opacity="0.85" FontFamily="Times New Roman">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="ФИО" Width="247">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <TextBlock Text="{Binding FIO}" FontSize="16" FontWeight="Regular" />
+                                </Grid>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Должность" Width="250">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <TextBlock Text="{Binding Job}" FontSize="16" FontWeight="Regular" />
+                                </Grid>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Предприятие" Width="270">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <TextBlock Text="{Binding Enterprise}" FontSize="16" FontWeight="Regular" />
+                                </Grid>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Номер" Width="100" >
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Grid>
+                                    <TextBlock Foreground="Black" Text="{Binding Number}" FontSize="16" FontWeight="Bold" />
+                                </Grid>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    </GridView>
+            </ListView.View>
+        </ListView>
+        <Image Height="99" HorizontalAlignment="Left" Margin="726,0,0,0" Name="image1" Stretch="Fill" VerticalAlignment="Top" Width="163" Source="/Phonebook;component/Images/LoadScreen.png" />
+        <Menu Height="23" HorizontalAlignment="Left" Margin="694,0,0,0" Name="menuEdit" VerticalAlignment="Top" Width="205" Background="{x:Null}">
+            <MenuItem Header="Редактировать справочники" FontSize="16" FontFamily="Times New Roman" Background="{x:Null}" Focusable="False" BorderBrush="#FF707070">
+                <MenuItem Header="Должности" Click="MenuItemJob_Click" />
+                <MenuItem Header="Предприятия" Click="MenuItemEnterprise_Click" />
+                <MenuItem Header="Добавить сотрудника" Click="MenuItemAdd_Click" />
+                <!--<MenuItem Header="Загрузить сотрудников из файла" Click="MenuItemAddList_Click" />-->
+            </MenuItem>
+        </Menu>
+        <Button Content="Очистить" Height="36" HorizontalAlignment="Left" Margin="436,55,0,0" Name="buttonClear" VerticalAlignment="Top" Width="122" Click="buttonClear_Click" FontSize="16" FontWeight="Bold" FontFamily="Times New Roman" Background="Red" Foreground="White">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}" BorderThickness="1" BorderBrush="#FF707070" CornerRadius="2">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                    <Style.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter Property="Background" Value="#FFC5F3F8"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
+        </Button>
+        <Button Content="Поиск" Height="38" HorizontalAlignment="Left" Margin="436,12,0,0" Name="buttonFind" VerticalAlignment="Top" Width="122" Click="buttonFind_Click" FontSize="16" FontWeight="Bold" Foreground="Black" FontFamily="Times New Roman" Focusable="False" Background="#FF9AEEFF" />
+    </Grid>
+</Window>

@@ -1,0 +1,345 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+<<<<<<< HEAD
+using System.Windows;
+=======
+using System.Threading;
+using System.Windows;
+using System.Windows.Input;
+>>>>>>> d93839860872cbd3ceabcf9cbc84eb872d0ca4a4
+using System.Windows.Media;
+using Phonebook.CollectionModels;
+using Phonebook.Models;
+
+namespace Phonebook
+{
+    /// <summary>
+    /// Логика взаимодействия для MainWindow.xaml
+    /// </summary>
+    public partial class MainWindow : Window
+    {
+        private int accessLevel;
+
+        private CollectionPersonnel collectionPersonnel;
+        private CollectionJobs collectionJobs;
+        private CollectionEnterprises collectionEnterprises;
+
+        private const string FIOText = "ФИО";
+        private const string JobText = "Должность";
+        private const string EnterpriseText = "Предприятие";
+        private const string PhoneText = "___-__-__";
+        private readonly Brush emptyBrush = new SolidColorBrush(Colors.Gray);
+        private readonly Brush filledBrush = new SolidColorBrush(Colors.Black);
+        private readonly Brush buttonDefaultBrush;
+<<<<<<< HEAD
+
+        public MainWindow()
+        {
+=======
+        SplashScreen splash = new SplashScreen("LoadScreen.png");
+        public MainWindow()
+        {
+            
+            splash.Show(true, true);
+            Thread.Sleep(2000);
+>>>>>>> d93839860872cbd3ceabcf9cbc84eb872d0ca4a4
+            InitializeComponent();
+
+            accessLevel = 0;
+            buttonDefaultBrush = buttonFind.Background;
+            //получаем уровень доступа
+            if (accessLevel != 0)
+            {
+                menuEdit.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void textBoxFIO_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (textBoxFIO.Text.Equals(FIOText))
+            {
+                textBoxFIO.Clear();
+                textBoxFIO.Foreground = filledBrush;
+            }
+        }
+
+        private void textBoxFIO_LostFocus(object sender, RoutedEventArgs e)
+        {
+            textBoxFIO.Text = textBoxFIO.Text.Trim();
+            if (textBoxFIO.Text.Equals(string.Empty))
+            {
+                textBoxFIO.Text = FIOText;
+                textBoxFIO.Foreground = emptyBrush;
+            }
+<<<<<<< HEAD
+            else
+            {
+                buttonFind.Background = new RadialGradientBrush(Colors.Red,Colors.DarkRed);
+            }
+=======
+            //else
+            //{
+            //    buttonFind.Background = new RadialGradientBrush(Colors.Red,Colors.DarkRed);
+            //}
+>>>>>>> d93839860872cbd3ceabcf9cbc84eb872d0ca4a4
+        }
+
+        private void comboBoxJob_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (comboBoxJob.Text.Equals(JobText))
+            {
+                comboBoxJob.Text = "";
+                comboBoxJob.Foreground = filledBrush;
+            }
+        }
+
+        private void comboBoxJob_LostFocus(object sender, RoutedEventArgs e)
+        {
+            comboBoxJob.Text = comboBoxJob.Text.Trim();
+            if (comboBoxJob.Text.Equals(string.Empty))
+            {
+                comboBoxJob.Text = JobText;
+<<<<<<< HEAD
+                comboBoxJob.Foreground = emptyBrush;
+            }
+            else
+            {
+                buttonFind.Background = new RadialGradientBrush(Colors.Red, Colors.DarkRed);
+            }
+=======
+                
+                comboBoxJob.Foreground = emptyBrush;
+            }
+            //else
+            //{
+            //    buttonFind.Background = new RadialGradientBrush(Colors.Red, Colors.DarkRed);
+            //}
+>>>>>>> d93839860872cbd3ceabcf9cbc84eb872d0ca4a4
+        }
+
+        private void comboBoxEnterprise_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (comboBoxEnterprise.Text.Equals(EnterpriseText))
+            {
+                comboBoxEnterprise.Text = "";
+                comboBoxEnterprise.Foreground = filledBrush;
+            }
+        }
+
+        private void comboBoxEnterprise_LostFocus(object sender, RoutedEventArgs e)
+        {
+            comboBoxEnterprise.Text = comboBoxEnterprise.Text.Trim();
+            if (comboBoxEnterprise.Text.Equals(string.Empty))
+            {
+                comboBoxEnterprise.Text = EnterpriseText;
+                comboBoxEnterprise.Foreground = emptyBrush;
+            }
+<<<<<<< HEAD
+            else
+            {
+                buttonFind.Background = new RadialGradientBrush(Colors.Red, Colors.DarkRed);
+            }
+=======
+            //else
+            //{
+            //    buttonFind.Background = new RadialGradientBrush(Colors.Red, Colors.DarkRed);
+            //}
+>>>>>>> d93839860872cbd3ceabcf9cbc84eb872d0ca4a4
+        }
+
+        /// <summary>
+        /// Заполняет comboBoxJob. 
+        /// </summary>
+        /// <param name="jobs">Коллекция значений для заполнения</param>
+        private void FillComboBoxJob(List<Job> jobs)
+        {
+            comboBoxJob.Items.Clear();
+            foreach (Job job in jobs)
+            {
+                comboBoxJob.Items.Add(job.JobName);
+            }
+        }
+
+        /// <summary>
+        /// Заполняет comboBoxEnterprise.
+        /// </summary>
+        /// <param name="enterprises">Коллекция значений для заполнения</param>
+        private void FillComboBoxEnterpise(List<Enterprise> enterprises)
+        {
+            comboBoxEnterprise.Items.Clear();
+            foreach (var enterprise in enterprises)
+            {
+                comboBoxEnterprise.Items.Add(enterprise.Name);
+            }
+        }
+
+        private void comboBoxJob_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            comboBoxJob.Items.Clear();
+<<<<<<< HEAD
+        }
+        private void comboBoxJob_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            FillComboBoxJob(collectionJobs.FindJobsForMask(comboBoxJob.Text));
+            comboBoxJob.IsDropDownOpen = true;
+=======
+            comboBoxJob.IsDropDownOpen = true;
+            if (e.Key == Key.Down)
+            {
+                comboBoxJob.SelectedIndex++;
+            }
+            if (e.Key == Key.Up)
+            {
+                if (comboBoxJob.SelectedIndex != -1)
+                {
+                    comboBoxJob.SelectedIndex--;
+                }
+            }
+            
+        }
+
+        private void comboBoxJob_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Down || e.Key ==Key.Up) return;
+            FillComboBoxJob(collectionJobs.FindJobsForMask(comboBoxJob.Text.Trim()));
+>>>>>>> d93839860872cbd3ceabcf9cbc84eb872d0ca4a4
+        }
+
+        private void comboBoxEnterprise_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            comboBoxEnterprise.Items.Clear();
+<<<<<<< HEAD
+        }
+        private void comboBoxEnterprise_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            FillComboBoxEnterpise(collectionEnterprises.FindEnterprisesForMask(comboBoxEnterprise.Text));
+            comboBoxEnterprise.IsDropDownOpen = true;
+=======
+            comboBoxEnterprise.IsDropDownOpen = true;
+            if (e.Key == Key.Down)
+            {
+                comboBoxEnterprise.SelectedIndex++;
+            }
+            if (e.Key == Key.Up)
+            {
+                if (comboBoxEnterprise.SelectedIndex != -1)
+                {
+                    comboBoxEnterprise.SelectedIndex--;
+                }
+            }
+        }
+        private void comboBoxEnterprise_KeyUp(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == Key.Down || e.Key == Key.Up) return;
+            FillComboBoxEnterpise(collectionEnterprises.FindEnterprisesForMask(comboBoxEnterprise.Text.Trim()));
+>>>>>>> d93839860872cbd3ceabcf9cbc84eb872d0ca4a4
+        }
+
+        private void listViewResult_MouseDoubleClick(object sender, System.Windows.Input.MouseButtonEventArgs e)
+        {
+            if (listViewResult.SelectedItem!=null)
+            {
+                PersonInfo q = new PersonInfo(accessLevel, collectionPersonnel.FindPersonForId(((ListItem)listViewResult.SelectedItem).Id));
+                q.Show();
+            }
+        }
+
+        private void buttonClear_Click(object sender, RoutedEventArgs e)
+        {
+            textBoxFIO.Text = FIOText;
+            textBoxFIO.Foreground = emptyBrush;
+            comboBoxJob.Text = JobText;
+            comboBoxJob.Foreground = emptyBrush;
+            comboBoxEnterprise.Text = EnterpriseText;
+            comboBoxEnterprise.Foreground = emptyBrush;
+            maskedtextBoxPhone.Text = PhoneText;
+            Find();
+        }
+
+        private void Find()
+        {
+            listViewResult.Items.Clear();
+
+            string fio = textBoxFIO.Text.Equals(FIOText) ? "" : textBoxFIO.Text;
+            string job = comboBoxJob.Text.Equals(JobText) ? "" : comboBoxJob.Text;
+            string enterprise = comboBoxEnterprise.Text.Equals(EnterpriseText) ? "" : comboBoxEnterprise.Text;
+            string number = maskedtextBoxPhone.Text.Equals(PhoneText) ? "" : maskedtextBoxPhone.Text;
+
+            List<Person> personnel = collectionPersonnel.FindPersonnel(fio, job, enterprise, number);
+            foreach (var person in personnel)
+            {
+                ListItem newItem = new ListItem(
+                    person.Id,
+                    person.Surname + " " + person.Name + " " + person.SecondName,
+                    person.Job,
+                    person.Entretprise,
+                    person.LandlineNumber.Replace('*', '\n')
+                    );
+                listViewResult.Items.Add(newItem);
+            }
+
+            buttonFind.Background = buttonDefaultBrush;
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Environment.Exit(0);
+        }
+
+        private void buttonFind_Click(object sender, RoutedEventArgs e)
+        {
+            Find();
+        }
+
+        private void Window_Activated(object sender, EventArgs e)
+        {
+            collectionPersonnel = new CollectionPersonnel();
+            collectionJobs = new CollectionJobs();
+            collectionEnterprises = new CollectionEnterprises();
+            //заполняем комбобоксы
+            FillComboBoxJob(collectionJobs.Jobs);
+            FillComboBoxEnterpise(collectionEnterprises.Enterprises);
+            //выводим весь список
+            Find();
+<<<<<<< HEAD
+=======
+            splash.Close(new TimeSpan(1));
+            Opacity = 1;
+>>>>>>> d93839860872cbd3ceabcf9cbc84eb872d0ca4a4
+        }
+
+        private void MenuItemJob_Click(object sender, RoutedEventArgs e)
+        {
+            new HandbookWindow(0).Show();
+        }
+
+        private void MenuItemEnterprise_Click(object sender, RoutedEventArgs e)
+        {
+            new HandbookWindow(1).Show();
+        }
+
+        private void MenuItemAdd_Click(object sender, RoutedEventArgs e)
+        {
+            new PersonInfo(0, new Person()).Show();
+        }
+    }
+
+    public class ListItem
+    {
+        public int Id { get; set; }
+        public string FIO { get; set; }
+        public string Job { get; set; }
+        public string Enterprise { get; set; }
+        public string Number { get; set; }
+
+        public ListItem(int id,string fio, string job, string enterprise, string number)
+        {
+            Id = id;
+            FIO = fio;
+            Job = job;
+            Enterprise = enterprise;
+            Number = number;
+        }
+    }
+}
