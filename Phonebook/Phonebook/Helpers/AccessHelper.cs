@@ -26,7 +26,10 @@ namespace Phonebook.Helpers
                 OleDbDataReader dataReader = OleDbCommand.ExecuteReader();
                 while (dataReader.Read())
                 {
-                    jobs.Add(new Job(GetField<int>(dataReader, "Id"), GetField<string>(dataReader, "Job")));
+                    jobs.Add(new Job(
+                        GetField<int>(dataReader, "Id"), 
+                        GetField<string>(dataReader, "Job"),
+                        GetField<int>(dataReader,"SortOrder")));
                 }
             }
             finally
@@ -52,7 +55,11 @@ namespace Phonebook.Helpers
                 OleDbDataReader dataReader = OleDbCommand.ExecuteReader();
                 while (dataReader.Read())
                 {
-                    enterprises.Add(new Enterprise(GetField<int>(dataReader, "Id"), GetField<string>(dataReader, "Address"), GetField<string>(dataReader, "Name")));
+                    enterprises.Add(new Enterprise(
+                        GetField<int>(dataReader, "Id"),
+                        GetField<string>(dataReader, "Address"), 
+                        GetField<string>(dataReader, "Name"),
+                        GetField<int>(dataReader, "SortOrder")));
                 }
             }
             finally
@@ -69,7 +76,7 @@ namespace Phonebook.Helpers
             List<Person> persons = new List<Person>();
 
             const string command =
-                "SELECT Personnel.Id, Personnel.Surname, Personnel.Name, Personnel.Secondname, Enterprises.Name, Jobs.Job, Personnel.LandlineNumbers, Personnel.CellNumbers, Personnel.InternalNumbers, Personnel.Photo " +
+                "SELECT Personnel.Id, Personnel.Surname, Personnel.Name, Personnel.Secondname, Enterprises.Name, Jobs.Job, Personnel.LandlineNumbers, Personnel.CellNumbers, Personnel.InternalNumbers, Personnel.Photo, Personnel.Email " +
                 "FROM Jobs INNER JOIN (Enterprises INNER JOIN Personnel ON Enterprises.Id = Personnel.Id_enterprise) ON Jobs.Id = Personnel.Id_job " +
                 "ORDER BY Personnel.Surname;";
             OleDbConnection connection = new OleDbConnection(ConnectionString);
@@ -81,7 +88,7 @@ namespace Phonebook.Helpers
                 while (dataReader.Read())
                 {
                     persons.Add(new Person(
-                        GetField<int>(dataReader,"Id"),
+                        GetField<int>(dataReader, "Id"),
                         GetField<string>(dataReader, "Surname"),
                         GetField<string>(dataReader, "Personnel.Name"),
                         GetField<string>(dataReader, "Secondname"),
@@ -89,8 +96,9 @@ namespace Phonebook.Helpers
                         GetField<string>(dataReader, "Job"),
                         GetField<string>(dataReader, "LandlineNumbers"),
                         GetField<string>(dataReader, "CellNumbers"),
-                        GetField<string>(dataReader,"InternalNumbers"),
-                        GetField<string>(dataReader, "Photo")));
+                        GetField<string>(dataReader, "InternalNumbers"),
+                        GetField<string>(dataReader, "Photo"),
+                        GetField<string>(dataReader, "Email")));
                 }
             }
             finally
@@ -109,8 +117,8 @@ namespace Phonebook.Helpers
         {
             string updateString =
                 string.Format(
-                    "update Personnel set Surname='{1}', Name='{2}', Secondname='{3}', Id_job={4}, Id_enterprise={5}, CellNumbers='{6}', LandlineNumbers='{7}', InternalNumbers='{8}', Photo='{9}' where Id={0}",
-                    person.Id,person.Surname,person.Name,person.SecondName,idJob,idEnterprise,person.CellNumber,person.LandlineNumber,person.InternalNumber,person.Photo);
+                    "update Personnel set Surname='{1}', Name='{2}', Secondname='{3}', Id_job={4}, Id_enterprise={5}, CellNumbers='{6}', LandlineNumbers='{7}', InternalNumbers='{8}', Photo='{9}', Email='{10}' where Id={0}",
+                    person.Id,person.Surname,person.Name,person.SecondName,idJob,idEnterprise,person.CellNumber,person.LandlineNumber,person.InternalNumber,person.Photo,person.Email);
             SendQuery(updateString);
         }
         /// <summary>
@@ -123,8 +131,8 @@ namespace Phonebook.Helpers
         {
             string insertString =
                 string.Format(
-                    "insert into Personnel (Surname, Name, Secondname, Id_job, Id_enterprise, CellNumbers, LandlineNumbers, InternalNumbers, Photo)" +
-                    "values('{0}','{1}','{2}',{3},{4},'{5}','{6}','{7}','{8}')",
+                    "insert into Personnel (Surname, Name, Secondname, Id_job, Id_enterprise, CellNumbers, LandlineNumbers, InternalNumbers, Photo, Email)" +
+                    "values('{0}','{1}','{2}',{3},{4},'{5}','{6}','{7}','{8}','{9}')",
                     person.Surname,
                     person.Name,
                     person.SecondName,
@@ -133,7 +141,8 @@ namespace Phonebook.Helpers
                     person.CellNumber,
                     person.LandlineNumber,
                     person.InternalNumber,
-                    person.Photo);
+                    person.Photo,
+                    person.Email);
             SendQuery(insertString);
         }
         /// <summary>
@@ -151,7 +160,8 @@ namespace Phonebook.Helpers
         /// <param name="job">Должность</param>
         public static void UpdateJob(Job job)
         {
-            string updateString = string.Format("update Jobs set Job='{0}' where Id={1}", job.JobName, job.Id);
+            string updateString = string.Format("update Jobs set Job='{0}', SortOrder={1} where Id={2}", 
+                job.JobName, job.SortOrder, job.Id);
             SendQuery(updateString);
         }
         /// <summary>
@@ -160,7 +170,9 @@ namespace Phonebook.Helpers
         /// <param name="enterprise">Предприятие.</param>
         public static void UpdateEnterpise(Enterprise enterprise)
         {
-            string updateString = string.Format("update Enterprises set Name='{0}', Address='{1}' where Id={2}", enterprise.Name, enterprise.Address, enterprise.Id);
+            string updateString =
+                string.Format("update Enterprises set Name='{0}', Address='{1}', SortOrder={2} where Id={3}",
+                    enterprise.Name, enterprise.Address, enterprise.SortOrder, enterprise.Id);
             SendQuery(updateString);
         }
         /// <summary>
@@ -168,7 +180,7 @@ namespace Phonebook.Helpers
         /// </summary>
         public static int InsertNewJob()
         {
-            string insertString = "insert into Jobs (Job) values('')";
+            string insertString = "insert into Jobs (Job, SortOrder) values('',9999)";
             string getNewId = "SELECT max(Id) from Jobs";
             return SendQuery(insertString, getNewId);
 
@@ -179,25 +191,32 @@ namespace Phonebook.Helpers
         /// <returns></returns>
         public static int InsertNewEnterprise()
         {
-            string insertString = "insert into Enterprises (Name, Address) values('','')";
+            string insertString = "insert into Enterprises (Name, Address) values('','',9999)";
             string getNewId = "SELECT max(Id) from Enterprises";
             return SendQuery(insertString, getNewId);
         }
         /// <summary>
-        /// 
+        /// Удаляет должность из базы по Id.
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="id">Id должности для удаления.</param>
         public static void DeleteJob(int id)
         {
             string deleteString = string.Format("delete from Jobs where id={0}", id);
             SendQuery(deleteString);
         }
-
+        /// <summary>
+        /// Удаляет предприятие из базы по Id.
+        /// </summary>
+        /// <param name="id">Id предприятия для удаления.</param>
         public static void DeleteEnterprise(int id)
         {
             string deleteString = string.Format("delete from Enterprises where id={0}", id);
             SendQuery(deleteString);
         }
+        /// <summary>
+        /// Отправляет запрос к базе данных.
+        /// </summary>
+        /// <param name="queryString">Строка запроса.</param>
         private static void SendQuery(string queryString)
         {
             BackgroundWorker worker = new BackgroundWorker();
@@ -219,7 +238,11 @@ namespace Phonebook.Helpers
             };
             worker.RunWorkerAsync();
         }
-
+        /// <summary>
+        /// Отправляет запрос к базе данных и возвращает Id новой записи.
+        /// </summary>
+        /// <param name="queryString">Строка запроса на добавление.</param>
+        /// <param name="getNewId">Строка запроса на получение нового Id.</param>
         private static int SendQuery(string queryString, string getNewId)
         {
             OleDbConnection connection = new OleDbConnection(ConnectionString);

@@ -12,8 +12,10 @@
         public string LandlineNumber { get; set; }
         public string InternalNumber { get; set; }
         public string Photo { get; set; }
+        public string Email { get; set; }
 
-        public Person(int id, string surname, string name, string secondName, string entretprise, string job, string landlineNumber, string cellNumber, string internalNumber, string photo)
+        public Person(int id, string surname, string name, string secondName, string entretprise, string job,
+            string landlineNumber, string cellNumber, string internalNumber, string photo, string email)
         {
             Id = id;
             Surname = surname;
@@ -25,6 +27,7 @@
             CellNumber = cellNumber;
             InternalNumber = internalNumber;
             Photo = photo;
+            Email = email;
         }
 
         public Person()
@@ -39,6 +42,7 @@
             CellNumber = "";
             InternalNumber = "";
             Photo = "";
+            Email = "";
         }
     }
 }

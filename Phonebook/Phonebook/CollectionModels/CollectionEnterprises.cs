@@ -51,7 +51,7 @@ namespace Phonebook.CollectionModels
         public int InsertNew()
         {
             int newItemId = AccessHelper.InsertNewEnterprise();
-            Enterprises.Add(new Enterprise(newItemId, "", ""));
+            Enterprises.Add(new Enterprise(newItemId, "", "",9999));
             return newItemId;
         }
 

@@ -14,7 +14,7 @@ namespace Phonebook
     /// <summary>
     /// Логика взаимодействия для PersonInfo.xaml
     /// </summary>
-    public partial class PersonInfo : Window
+    public partial class PersonInfo
     {
         private readonly string ImagePath;
         private const string NullImage = "NullImage.png";
@@ -68,7 +68,7 @@ namespace Phonebook
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
 
-            foreach (Job job in collectionJobs.Jobs)
+            foreach (var job in collectionJobs.Jobs)
             {
                 comboBoxJob.Items.Add(job.JobName);
             }
@@ -84,7 +84,7 @@ namespace Phonebook
             textBoxLandline.Text = person.LandlineNumber.Replace('*', '\n');
             textBoxInternal.Text = person.InternalNumber.Replace('*', '\n');
             textBoxMobile.Text = person.CellNumber.Replace('*', '\n');
-
+            textBoxMail.Text = person.Email.Replace('*', '\n');
             image1.Source = person.Photo.Equals("") ? new BitmapImage(new Uri(ImagePath + NullImage)) : new BitmapImage(new Uri(ImagePath + person.Photo));
         }
 
@@ -127,6 +127,7 @@ namespace Phonebook
             person.CellNumber = textBoxMobile.Text.Replace('\n', '*');
             person.LandlineNumber = textBoxLandline.Text.Replace('\n', '*');
             person.InternalNumber = textBoxInternal.Text.Replace('\n', '*');
+            person.Email = textBoxMail.Text.Replace('\n', '*');
             if (image1.Source != null)
             {
                 person.Photo = ((BitmapImage) image1.Source).UriSource.AbsolutePath.Split('/').Last();
@@ -145,7 +146,7 @@ namespace Phonebook
         private void image1_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             OpenFileDialog dlg = new OpenFileDialog();
-            dlg.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.jfif, *.png) | *.jpg; *.jpeg; *.jpe; *.jfif; *.png";
+            dlg.Filter = "Image files (*.jpg, *.jpeg, *.jpe, *.png) | *.jpg; *.jpeg; *.jpe; *.png";
             Nullable<bool> result = dlg.ShowDialog();
             if (result == true)
             {

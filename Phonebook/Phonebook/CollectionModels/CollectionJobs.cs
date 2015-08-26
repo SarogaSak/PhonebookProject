@@ -46,7 +46,7 @@ namespace Phonebook.CollectionModels
         public int InsertNew()
         {
             int newItemId = AccessHelper.InsertNewJob();
-            Jobs.Add(new Job(newItemId, ""));
+            Jobs.Add(new Job(newItemId, "",9999));
             return newItemId;
         }
 
