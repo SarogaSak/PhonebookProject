@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Windows;
 using Phonebook.CollectionModels;
-using Phonebook.Helpers;
 using Phonebook.Models;
 
 namespace Phonebook
@@ -25,12 +23,12 @@ namespace Phonebook
                 case 0:
                     dataGridJob.Visibility = Visibility.Visible;
                     collectionJobs = new CollectionJobs();
-                    dataGridJob.ItemsSource = collectionJobs.Jobs;
+                    dataGridJob.ItemsSource = collectionJobs.SortedList();
                     break;
                 case 1:
                     dataGridEntrprize.Visibility = Visibility.Visible;
                     collectionEnterprises = new CollectionEnterprises();
-                    dataGridEntrprize.ItemsSource = collectionEnterprises.Enterprises;
+                    dataGridEntrprize.ItemsSource = collectionEnterprises.SortedList();
                     break;
             }
         }
@@ -98,8 +96,6 @@ namespace Phonebook
             {
                 case 0:
                     Title = "Должности";
-                    
-                    
                     break;
                 case 1:
                     Title = "Предприятия";

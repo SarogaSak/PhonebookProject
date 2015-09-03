@@ -15,7 +15,7 @@
         <ListView Height="564" HorizontalAlignment="Left" Margin="12,97,0,0" Name="listViewResult" VerticalAlignment="Top" Width="877" MouseDoubleClick="listViewResult_MouseDoubleClick" SelectionMode="Single" Foreground="Black" FontSize="16" FontWeight="Bold" Opacity="0.85" FontFamily="Times New Roman">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="ФИО" Width="247">
+                    <GridViewColumn Header="ФИО" Width="300">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -24,20 +24,11 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Должность" Width="250">
+                    <GridViewColumn Header="Должность" Width="450">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid>
                                     <TextBlock Text="{Binding Job}" FontSize="16" FontWeight="Regular" />
-                                </Grid>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Header="Предприятие" Width="270">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Grid>
-                                    <TextBlock Text="{Binding Enterprise}" FontSize="16" FontWeight="Regular" />
                                 </Grid>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
@@ -53,6 +44,30 @@
                     </GridViewColumn>
                     </GridView>
             </ListView.View>
+            
+            <ListView.GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.ContainerStyle>
+                        <Style TargetType="{x:Type GroupItem}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate>
+                                        <Expander IsExpanded="True">
+                                            <Expander.Header>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="Black" FontSize="22" VerticalAlignment="Bottom" />
+                                                </StackPanel>
+                                            </Expander.Header>
+                                            <ItemsPresenter />
+                                        </Expander>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </GroupStyle.ContainerStyle>
+                </GroupStyle>
+            </ListView.GroupStyle>
+                
         </ListView>
         <Image Height="99" HorizontalAlignment="Left" Margin="726,0,0,0" Name="image1" Stretch="Fill" VerticalAlignment="Top" Width="163" Source="/Phonebook;component/Images/LoadScreen.png" />
         <Menu Height="23" HorizontalAlignment="Left" Margin="694,0,0,0" Name="menuEdit" VerticalAlignment="Top" Width="205" Background="{x:Null}">

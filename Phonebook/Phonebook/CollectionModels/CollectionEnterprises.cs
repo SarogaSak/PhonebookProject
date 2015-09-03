@@ -60,5 +60,10 @@ namespace Phonebook.CollectionModels
             AccessHelper.DeleteEnterprise(id);
             Enterprises.Remove(Enterprises.First(enterprise => enterprise.Id==id));
         }
+
+        public List<Enterprise> SortedList()
+        {
+            return Enterprises.OrderBy(enterprise => enterprise.SortOrder).ToList();
+        }
     }
 }

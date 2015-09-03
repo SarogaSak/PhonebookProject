@@ -3,19 +3,65 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         WindowStartupLocation="CenterScreen"
         Title="HandbookWindow" Height="461" Width="732" Loaded="Window_Loaded" ResizeMode="NoResize" Name="hand1" Icon="/Phonebook;component/ico.ico">
+    <Window.Resources>
+        <Style x:Key="CenterGridHeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="Bold"></Setter>
+        </Style>
+        <Style x:Key="RightGridTextStyle" TargetType="DataGridCell">
+            <Setter Property="HorizontalAlignment" Value="Right"></Setter>
+        </Style>
+    </Window.Resources>
     <Window.Background>
         <ImageBrush ImageSource="/Phonebook;component/Images/1mVZTzYITo81.jpg" />
     </Window.Background>
     <Grid>
-        <DataGrid Height="370" HorizontalAlignment="Left" Margin="12,12,0,0" Name="dataGridJob" VerticalAlignment="Top" Width="686" AutoGenerateColumns="False" GridLinesVisibility="Horizontal" Visibility="Hidden" CanUserSortColumns="False" FontSize="14" FontFamily="Times New Roman">
+        <DataGrid Height="370" 
+                  HorizontalAlignment="Left" 
+                  Margin="12,12,0,0" 
+                  Name="dataGridJob" 
+                  VerticalAlignment="Top" 
+                  Width="686" 
+                  AutoGenerateColumns="False" 
+                  GridLinesVisibility="Horizontal" 
+                  Visibility="Hidden" 
+                  CanUserSortColumns="True" 
+                  FontSize="14" 
+                  FontFamily="Times New Roman">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Должность" Binding="{Binding JobName}" Width="675" />
+                <DataGridTextColumn HeaderStyle="{StaticResource CenterGridHeaderStyle}" 
+                                    Header="Должность" 
+                                    Binding="{Binding JobName}" Width="575" />
+                <DataGridTextColumn HeaderStyle="{StaticResource CenterGridHeaderStyle}" 
+                                    CellStyle="{StaticResource RightGridTextStyle}"
+                                    Header="  Порядок&#x000A;сортировки" 
+                                    Binding="{Binding SortOrder}" Width="100" />
             </DataGrid.Columns>
         </DataGrid>
-        <DataGrid Height="370" HorizontalAlignment="Left" Margin="12,12,0,0" Name="dataGridEntrprize" VerticalAlignment="Top" Width="686" AutoGenerateColumns="False" GridLinesVisibility="Horizontal" Visibility="Hidden" CanUserSortColumns="False" FontFamily="Times New Roman" FontSize="14">
+        <DataGrid Height="370" 
+                  HorizontalAlignment="Left" 
+                  Margin="12,12,0,0" 
+                  Name="dataGridEntrprize" 
+                  VerticalAlignment="Top" 
+                  Width="686" 
+                  AutoGenerateColumns="False" 
+                  GridLinesVisibility="Horizontal" 
+                  Visibility="Hidden" 
+                  CanUserSortColumns="False" 
+                  FontFamily="Times New Roman" 
+                  FontSize="14" 
+                  ItemsSource="{Binding}">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Название" Binding="{Binding Name}" Width="300" />
-                <DataGridTextColumn Header="Адрес" Binding="{Binding Address}" Width="375" />
+                <DataGridTextColumn HeaderStyle="{StaticResource CenterGridHeaderStyle}" 
+                                    Header="Название" 
+                                    Binding="{Binding Name}" Width="250" />
+                <DataGridTextColumn HeaderStyle="{StaticResource CenterGridHeaderStyle}" 
+                                    Header="Адрес" 
+                                    Binding="{Binding Address}" Width="325" />
+                <DataGridTextColumn HeaderStyle="{StaticResource CenterGridHeaderStyle}" 
+                                    CellStyle="{StaticResource RightGridTextStyle}"
+                                    Header="  Порядок&#x000A;сортировки" 
+                                    Binding="{Binding SortOrder}" Width="100"/>
             </DataGrid.Columns>
         </DataGrid>
         <Button Content="Сохранить" Height="31" HorizontalAlignment="Left" Margin="79,386,0,0" Name="buttonSave" VerticalAlignment="Top" Width="155" Click="buttonSave_Click" Background="#FF9AEEFF" FontFamily="Times New Roman" FontSize="14" FontWeight="Bold" />

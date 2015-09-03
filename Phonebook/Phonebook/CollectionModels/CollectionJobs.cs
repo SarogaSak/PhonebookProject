@@ -55,5 +55,10 @@ namespace Phonebook.CollectionModels
             AccessHelper.DeleteJob(id);
             Jobs.Remove(Jobs.First(jobs => jobs.Id == id));
         }
+
+        public List<Job> SortedList()
+        {
+            return Jobs.OrderBy(job => job.SortOrder).ToList();
+        }
     }
 }

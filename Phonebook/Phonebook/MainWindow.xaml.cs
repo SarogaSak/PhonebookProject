@@ -198,7 +198,7 @@ namespace Phonebook
 
         private void Find()
         {
-            listViewResult.Items.Clear();
+            //listViewResult.Items.Clear();
 
             string fio = textBoxFIO.Text.Equals(FIOText) ? "" : textBoxFIO.Text.ToLower();
             string job = comboBoxJob.Text.Equals(JobText) ? "" : comboBoxJob.Text.ToLower();
@@ -206,6 +206,7 @@ namespace Phonebook
             string number = maskedtextBoxPhone.Text.Equals(PhoneText) ? "" : maskedtextBoxPhone.Text.Remove(0,6);
 
             List<Person> personnel = collectionPersonnel.FindPersonnel(fio, job, enterprise, number);
+            List<ListItem> items = new List<ListItem>();
             foreach (var person in personnel)
             {
                 ListItem newItem = new ListItem(
@@ -215,8 +216,12 @@ namespace Phonebook
                     person.Entretprise,
                     person.LandlineNumber.Replace('*', '\n')
                     );
-                listViewResult.Items.Add(newItem);
+                items.Add(newItem);
             }
+            listViewResult.ItemsSource = items;
+            CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(listViewResult.ItemsSource);
+            PropertyGroupDescription groupDescription = new PropertyGroupDescription("Enterprise");
+            view.GroupDescriptions.Add(groupDescription);
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)
