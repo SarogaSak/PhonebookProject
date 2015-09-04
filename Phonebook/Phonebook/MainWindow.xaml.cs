@@ -7,6 +7,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using Phonebook.CollectionModels;
+using Phonebook.Helpers;
 using Phonebook.Models;
 using Excel = Microsoft.Office.Interop.Excel;
 
@@ -34,7 +35,7 @@ namespace Phonebook
         {
             InitializeComponent();
 
-            accessLevel = 0;
+            accessLevel = AccessHelper.GetAccessLevel();
             //получаем уровень доступа
             if (accessLevel != 0)
             {

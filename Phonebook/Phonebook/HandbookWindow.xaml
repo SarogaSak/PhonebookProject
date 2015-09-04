@@ -47,7 +47,7 @@
                   AutoGenerateColumns="False" 
                   GridLinesVisibility="Horizontal" 
                   Visibility="Hidden" 
-                  CanUserSortColumns="False" 
+                  CanUserSortColumns="True" 
                   FontFamily="Times New Roman" 
                   FontSize="14" 
                   ItemsSource="{Binding}">

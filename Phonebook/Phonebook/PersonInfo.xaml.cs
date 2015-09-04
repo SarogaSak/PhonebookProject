@@ -80,7 +80,10 @@ namespace Phonebook
             textBoxFIO.Text = (person.Surname + " " + person.Name + " " + person.SecondName).Trim();
             comboBoxJob.Text = person.Job;
             comboBoxEnterprise.Text = person.Entretprise;
-            textBoxAddress.Text = collectionEnterprises.GetAddressByName(person.Entretprise);
+            if (!person.Entretprise.Equals(""))
+            {
+                textBoxAddress.Text = collectionEnterprises.GetAddressByName(person.Entretprise);
+            }
             textBoxLandline.Text = person.LandlineNumber.Replace('*', '\n');
             textBoxInternal.Text = person.InternalNumber.Replace('*', '\n');
             textBoxMobile.Text = person.CellNumber.Replace('*', '\n');
