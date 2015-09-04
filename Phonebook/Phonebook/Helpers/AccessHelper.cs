@@ -108,6 +108,42 @@ namespace Phonebook.Helpers
             }
             return persons;
         }
+
+        //public static IEnumerable<Person> GetPersonnel(int i)
+        //{
+        //    const string command =
+        //        "SELECT Personnel.Id, Personnel.Surname, Personnel.Name, Personnel.Secondname, Enterprises.Name, Jobs.Job, Personnel.LandlineNumbers, Personnel.CellNumbers, Personnel.InternalNumbers, Personnel.Photo, Personnel.Email " +
+        //        "FROM Jobs INNER JOIN (Enterprises INNER JOIN Personnel ON Enterprises.Id = Personnel.Id_enterprise) ON Jobs.Id = Personnel.Id_job " +
+        //        "ORDER BY Enterprises.SortOrder, Jobs.SortOrder;";
+        //    OleDbConnection connection = new OleDbConnection(ConnectionString);
+        //    OleDbCommand oleDbCommand = new OleDbCommand(command, connection);
+        //    try
+        //    {
+        //        connection.Open();
+        //        OleDbDataReader dataReader = oleDbCommand.ExecuteReader();
+        //        while (dataReader.Read())
+        //        {
+        //            yield return (new Person(
+        //                GetField<int>(dataReader, "Id"),
+        //                GetField<string>(dataReader, "Surname"),
+        //                GetField<string>(dataReader, "Personnel.Name"),
+        //                GetField<string>(dataReader, "Secondname"),
+        //                GetField<string>(dataReader, "Enterprises.Name"),
+        //                GetField<string>(dataReader, "Job"),
+        //                GetField<string>(dataReader, "LandlineNumbers"),
+        //                GetField<string>(dataReader, "CellNumbers"),
+        //                GetField<string>(dataReader, "InternalNumbers"),
+        //                GetField<string>(dataReader, "Photo"),
+        //                GetField<string>(dataReader, "Email")));
+        //        }
+        //    }
+        //    finally
+        //    {
+        //        oleDbCommand.Dispose();
+        //        connection.Close();
+        //        connection.Dispose();
+        //    }
+        //}
         /// <summary>
         /// Обновляет данные сотрудника.
         /// </summary>

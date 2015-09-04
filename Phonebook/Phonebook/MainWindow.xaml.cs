@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Data;
@@ -107,11 +108,7 @@ namespace Phonebook
         /// <param name="jobs">Коллекция значений для заполнения</param>
         private void FillComboBoxJob(List<Job> jobs)
         {
-            comboBoxJob.Items.Clear();
-            foreach (Job job in jobs)
-            {
-                comboBoxJob.Items.Add(job.JobName);
-            }
+            comboBoxJob.ItemsSource = jobs.Select(job => job.JobName);
         }
 
         /// <summary>
@@ -120,16 +117,11 @@ namespace Phonebook
         /// <param name="enterprises">Коллекция значений для заполнения</param>
         private void FillComboBoxEnterpise(List<Enterprise> enterprises)
         {
-            comboBoxEnterprise.Items.Clear();
-            foreach (var enterprise in enterprises)
-            {
-                comboBoxEnterprise.Items.Add(enterprise.Name);
-            }
+            comboBoxEnterprise.ItemsSource = enterprises.Select(enterprise => enterprise.Name);
         }
 
         private void comboBoxJob_KeyDown(object sender, KeyEventArgs e)
         {
-            comboBoxJob.Items.Clear();
             comboBoxJob.IsDropDownOpen = true;
             switch (e.Key)
             {
@@ -151,12 +143,11 @@ namespace Phonebook
         private void comboBoxJob_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Down || e.Key ==Key.Up || e.Key==Key.Enter) return;
-            FillComboBoxJob(collectionJobs.FindJobsForMask(comboBoxJob.Text.ToLower().Trim()));
+            comboBoxJob.ItemsSource = collectionJobs.FindJobsForMask(comboBoxJob.Text.ToLower().Trim()).Select(job => job.JobName);
         }
 
         private void comboBoxEnterprise_KeyDown(object sender, KeyEventArgs e)
         {
-            comboBoxEnterprise.Items.Clear();
             comboBoxEnterprise.IsDropDownOpen = true;
             if (e.Key == Key.Down)
             {
@@ -172,8 +163,10 @@ namespace Phonebook
         }
         private void comboBoxEnterprise_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Down || e.Key == Key.Up) return;
-            FillComboBoxEnterpise(collectionEnterprises.FindEnterprisesForMask(comboBoxEnterprise.Text.ToLower().Trim()));
+            if (e.Key == Key.Down || e.Key == Key.Up || e.Key == Key.Enter) return;
+            comboBoxEnterprise.ItemsSource =
+                collectionEnterprises.FindEnterprisesForMask(comboBoxEnterprise.Text.ToLower().Trim())
+                    .Select(enterprise => enterprise.Name);
         }
 
         private void listViewResult_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -199,8 +192,6 @@ namespace Phonebook
 
         private void Find()
         {
-            //listViewResult.Items.Clear();
-
             string fio = textBoxFIO.Text.Equals(FIOText) ? "" : textBoxFIO.Text.ToLower();
             string job = comboBoxJob.Text.Equals(JobText) ? "" : comboBoxJob.Text.ToLower();
             string enterprise = comboBoxEnterprise.Text.Equals(EnterpriseText) ? "" : comboBoxEnterprise.Text.ToLower();
