@@ -27,7 +27,7 @@ namespace Phonebook
         public PersonInfo(int accessLevel, Person person)
         {
             InitializeComponent();
-            ImagePath = AppDomain.CurrentDomain.BaseDirectory + @"Image\";
+            ImagePath = AppDomain.CurrentDomain.BaseDirectory + @"Images\";
 
             this.person = person;
 

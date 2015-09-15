@@ -9,10 +9,10 @@
         <ImageBrush ImageSource="/Phonebook;component/Images/1mVZTzYITo81.jpg" />
     </Window.Background>
     <Grid>
-        <TextBox Height="24" HorizontalAlignment="Left" Margin="12,13,0,0" Name="textBoxFIO" VerticalAlignment="Top" Width="314" Text="ФИО" Foreground="Gray" GotFocus="textBoxFIO_GotFocus" LostFocus="textBoxFIO_LostFocus" FontWeight="Bold" FontSize="14" FontFamily="Times New Roman" />
-        <ComboBox Height="24" HorizontalAlignment="Left" Margin="12,40,0,0" Name="comboBoxJob" VerticalAlignment="Top" Width="418" IsEditable="True" Text="Должность" Foreground="Gray" FontWeight="Bold" GotFocus="comboBoxJob_GotFocus" LostFocus="comboBoxJob_LostFocus" KeyUp="comboBoxJob_KeyUp" KeyDown="comboBoxJob_KeyDown" FontSize="14" FontFamily="Times New Roman" IsTextSearchEnabled="False" />
-        <ComboBox Height="24" HorizontalAlignment="Left" Margin="12,67,0,0" Name="comboBoxEnterprise" VerticalAlignment="Top" Width="418" IsEditable="True" Text="Предприятие" Foreground="Gray" FontWeight="Bold" KeyDown="comboBoxEnterprise_KeyDown" GotFocus="comboBoxEnterprise_GotFocus" LostFocus="comboBoxEnterprise_LostFocus" KeyUp="comboBoxEnterprise_KeyUp" FontSize="14" FontFamily="Times New Roman" IsTextSearchEnabled="False" />
-        <xctk:MaskedTextBox Margin="330,13,0,0" Width="100" Mask="Тел : 000-00-00" FontSize="14" FontWeight="Bold" HorizontalContentAlignment="Right" Name="maskedtextBoxPhone" HorizontalAlignment="Left" Height="24" VerticalAlignment="Top" FontFamily="Times New Roman" />
+        <TextBox Margin="12,13,0,0" Name="textBoxFIO" Width="314" Text="ФИО" GotFocus="textBoxFIO_GotFocus" LostFocus="textBoxFIO_LostFocus" Style="{StaticResource DefaultControlStyle}" />
+        <ComboBox Margin="12,40,0,0" Name="comboBoxJob" Width="418" IsEditable="True" Text="Должность" GotFocus="comboBoxJob_GotFocus" LostFocus="comboBoxJob_LostFocus" KeyUp="comboBoxJob_KeyUp" KeyDown="comboBoxJob_KeyDown" IsTextSearchEnabled="False" Style="{StaticResource DefaultControlStyle}"/>
+        <ComboBox Margin="12,67,0,0" Name="comboBoxEnterprise" Width="418" IsEditable="True" Text="Предприятие" KeyDown="comboBoxEnterprise_KeyDown" GotFocus="comboBoxEnterprise_GotFocus" LostFocus="comboBoxEnterprise_LostFocus" KeyUp="comboBoxEnterprise_KeyUp" IsTextSearchEnabled="False" Style="{StaticResource DefaultControlStyle}"/>
+        <xctk:MaskedTextBox Margin="330,13,0,0" Width="100" Mask="Тел : 000-00-00" HorizontalContentAlignment="Right" Name="maskedtextBoxPhone" Style="{StaticResource DefaultControlStyle}"/>
         <ListView Height="564" HorizontalAlignment="Left" Margin="12,97,0,0" Name="listViewResult" VerticalAlignment="Top" Width="877" MouseDoubleClick="listViewResult_MouseDoubleClick" SelectionMode="Single" Foreground="Black" FontSize="16" FontWeight="Bold" Opacity="0.85" FontFamily="Times New Roman">
             <ListView.View>
                 <GridView>
@@ -25,7 +25,7 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Должность" Width="450">
+                    <GridViewColumn Header="Должность" Width="440">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid>

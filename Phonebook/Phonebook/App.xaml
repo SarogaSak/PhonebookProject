@@ -3,6 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              StartupUri="MainWindow.xaml" Startup="Application_Startup">
     <Application.Resources>
-         
+
+        <Style x:Key="DefaultControlStyle" TargetType="Control">
+            <Setter Property="Height" Value="24" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontFamily" Value="Times New Roman" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Foreground" Value="Gray" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+        
     </Application.Resources>
 </Application>

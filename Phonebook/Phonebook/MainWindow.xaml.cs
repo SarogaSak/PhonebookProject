@@ -2,8 +2,11 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Reflection;
+using System.Text;
 using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -35,7 +38,6 @@ namespace Phonebook
         public MainWindow()
         {
             InitializeComponent();
-
             accessLevel = AccessHelper.GetAccessLevel();
             //получаем уровень доступа
             if (accessLevel != 0)
@@ -78,7 +80,6 @@ namespace Phonebook
             if (comboBoxJob.Text.Equals(string.Empty))
             {
                 comboBoxJob.Text = JobText;
-                
                 comboBoxJob.Foreground = emptyBrush;
             }
         }
@@ -149,16 +150,20 @@ namespace Phonebook
         private void comboBoxEnterprise_KeyDown(object sender, KeyEventArgs e)
         {
             comboBoxEnterprise.IsDropDownOpen = true;
-            if (e.Key == Key.Down)
+            switch (e.Key)
             {
-                comboBoxEnterprise.SelectedIndex++;
-            }
-            if (e.Key == Key.Up)
-            {
-                if (comboBoxEnterprise.SelectedIndex != -1)
-                {
-                    comboBoxEnterprise.SelectedIndex--;
-                }
+                case Key.Down:
+                    comboBoxEnterprise.SelectedIndex++;
+                    break;
+                case Key.Up:
+                    if (comboBoxEnterprise.SelectedIndex != -1)
+                    {
+                        comboBoxEnterprise.SelectedIndex--;
+                    }
+                    break;
+                case Key.Enter:
+                    Find();
+                    break;
             }
         }
         private void comboBoxEnterprise_KeyUp(object sender, KeyEventArgs e)
@@ -265,7 +270,6 @@ namespace Phonebook
             {
                 MessageBox.Show(xlWorkSheet.Range["B"+i, Type.Missing].Value2.ToString());
             }
-            
         }
     }
 
