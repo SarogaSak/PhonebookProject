@@ -56,16 +56,27 @@
                                         <Expander IsExpanded="True">
                                             <Expander.Header>
                                                 <StackPanel Orientation="Horizontal">
-                                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="Black" FontSize="22" VerticalAlignment="Bottom" />
+                                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="Black" FontSize="22" VerticalAlignment="Bottom" TextDecorations="Underline"/>
                                                 </StackPanel>
                                             </Expander.Header>
-                                            <ItemsPresenter />
+                                            <Expander.Content>
+                                                <ItemsPresenter />
+                                            </Expander.Content>
                                         </Expander>
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
                         </Style>
                     </GroupStyle.ContainerStyle>
+                </GroupStyle>
+                <GroupStyle>
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="Black" FontSize="14" VerticalAlignment="Bottom" />
+                            </StackPanel>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
                 </GroupStyle>
             </ListView.GroupStyle>
                 

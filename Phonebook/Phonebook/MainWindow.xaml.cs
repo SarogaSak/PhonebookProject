@@ -218,7 +218,9 @@ namespace Phonebook
             listViewResult.ItemsSource = items;
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(listViewResult.ItemsSource);
             PropertyGroupDescription groupDescription = new PropertyGroupDescription("Enterprise");
+            PropertyGroupDescription groupDescription2 = new PropertyGroupDescription("Job");
             view.GroupDescriptions.Add(groupDescription);
+            view.GroupDescriptions.Add(groupDescription2);
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)

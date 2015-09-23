@@ -24,8 +24,10 @@ namespace Phonebook.CollectionModels
             return
                 Personnel.Where(
                     person =>
-                        person.Surname.ToLower().Contains(fio) && person.Job.ToLower().Contains(job) &&
-                        person.Entretprise.ToLower().Contains(enterprise) && person.LandlineNumber.Contains(phone)).ToList();
+                        person.Surname.ToLower().Contains(fio) && 
+                        person.Job.ToLower().Contains(job) &&
+                        person.Entretprise.ToLower().Contains(enterprise) && 
+                        person.LandlineNumber.Contains(phone)).ToList();
         }
 
         public Person FindPersonForId(int id)
