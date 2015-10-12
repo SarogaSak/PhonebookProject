@@ -90,13 +90,19 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BusinessLogic\BLCurator.cs" />
+    <Compile Include="BusinessLogic\BLDept.cs" />
+    <Compile Include="BusinessLogic\BLEnterprise.cs" />
+    <Compile Include="BusinessLogic\BLJob.cs" />
+    <Compile Include="BusinessLogic\AbstractBLModels.cs" />
+    <Compile Include="BusinessLogic\BLPerson.cs" />
     <Compile Include="CollectionModels\CollectionEnterprises.cs" />
     <Compile Include="CollectionModels\CollectionJobs.cs" />
     <Compile Include="CollectionModels\CollectionPersonnel.cs" />
     <Compile Include="HandbookWindow.xaml.cs">
       <DependentUpon>HandbookWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\AccessHelper.cs" />
+    <Compile Include="BusinessLogic\AccessHelper.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -107,6 +113,8 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\Curator.cs" />
+    <Compile Include="Models\Dept.cs" />
     <Compile Include="Models\Enterprise.cs" />
     <Compile Include="Models\Job.cs" />
     <Compile Include="Models\Person.cs" />

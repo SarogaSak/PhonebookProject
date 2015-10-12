@@ -1,9 +1,9 @@
 ﻿namespace Phonebook.Models
 {
     /// <summary>
-    /// Должности.
+    /// Кураторы.
     /// </summary>
-    public class Job
+    class Curator
     {
         /// <summary>
         /// ID.
@@ -11,25 +11,25 @@
         public int Id { get; private set; }
         
         /// <summary>
-        /// Название должности.
+        /// ФИО куратора
         /// </summary>
-        public string Name { get; set; }
+        public string FIO { get; set; }
         
         /// <summary>
-        /// Порядок сортировки.
+        /// Порядок сортировки
         /// </summary>
         public int SortOrder { get; set; }
-        
+
         /// <summary>
-        /// Конструктор с параметрами.
+        /// конструктор с параметрами.
         /// </summary>
-        /// <param name="id">Id</param>
-        /// <param name="name">Название должности</param>
+        /// <param name="id">ID.</param>
+        /// <param name="fio">ФИО куратора</param>
         /// <param name="sortOrder">Порядок сортировки</param>
-        public Job(int id, string name, int sortOrder)
+        public Curator(int id, string fio, int sortOrder)
         {
             Id = id;
-            Name = name;
+            FIO = fio;
             SortOrder = sortOrder;
         }
     }

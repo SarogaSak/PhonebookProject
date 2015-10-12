@@ -2,18 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Reflection;
-using System.Text;
 using System.Threading;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using Phonebook.CollectionModels;
-using Phonebook.Helpers;
 using Phonebook.Models;
-using Excel = Microsoft.Office.Interop.Excel;
 
 namespace Phonebook
 {
@@ -38,7 +33,7 @@ namespace Phonebook
         public MainWindow()
         {
             InitializeComponent();
-            accessLevel = AccessHelper.GetAccessLevel();
+            accessLevel = 0;
             //получаем уровень доступа
             if (accessLevel != 0)
             {
@@ -109,7 +104,7 @@ namespace Phonebook
         /// <param name="jobs">Коллекция значений для заполнения</param>
         private void FillComboBoxJob(List<Job> jobs)
         {
-            comboBoxJob.ItemsSource = jobs.Select(job => job.JobName);
+            comboBoxJob.ItemsSource = jobs.Select(job => job.Name);
         }
 
         /// <summary>
@@ -144,7 +139,7 @@ namespace Phonebook
         private void comboBoxJob_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Down || e.Key ==Key.Up || e.Key==Key.Enter) return;
-            comboBoxJob.ItemsSource = collectionJobs.FindJobsForMask(comboBoxJob.Text.ToLower().Trim()).Select(job => job.JobName);
+            comboBoxJob.ItemsSource = collectionJobs.FindJobsForMask(comboBoxJob.Text.ToLower().Trim()).Select(job => job.Name);
         }
 
         private void comboBoxEnterprise_KeyDown(object sender, KeyEventArgs e)
@@ -209,9 +204,9 @@ namespace Phonebook
                 ListItem newItem = new ListItem(
                     person.Id,
                     person.Surname + " " + person.Name + " " + person.SecondName,
-                    person.Job,
-                    person.Entretprise,
-                    person.LandlineNumber.Replace('*', '\n')
+                    person.JobName,
+                    person.DeptName,
+                    person.LandlineNumbers.Replace('*', '\n')
                     );
                 items.Add(newItem);
             }
@@ -261,17 +256,6 @@ namespace Phonebook
         private void MenuItemAdd_Click(object sender, RoutedEventArgs e)
         {
             new PersonInfo(0, new Person()).Show();
-        }
-
-        private void MenuItemAddList_Click(object sender, RoutedEventArgs e)
-        {
-            Excel.Application excelApp = new Excel.Application(); //открыть эксель
-            Excel.Workbook xlWorkBook = excelApp.Workbooks.Open("c:\\1.xls");
-            Excel.Worksheet xlWorkSheet = (Excel.Worksheet)xlWorkBook.Worksheets.Item[1];
-            for (int i = 1; i < xlWorkSheet.Rows.Count; i++)
-            {
-                MessageBox.Show(xlWorkSheet.Range["B"+i, Type.Missing].Value2.ToString());
-            }
         }
     }
 

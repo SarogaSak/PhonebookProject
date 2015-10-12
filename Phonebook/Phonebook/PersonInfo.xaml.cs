@@ -5,8 +5,8 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Media.Imaging;
 using Microsoft.Win32;
+using Phonebook.BusinessLogic;
 using Phonebook.CollectionModels;
-using Phonebook.Helpers;
 using Phonebook.Models;
 
 namespace Phonebook
@@ -70,7 +70,7 @@ namespace Phonebook
 
             foreach (var job in collectionJobs.Jobs)
             {
-                comboBoxJob.Items.Add(job.JobName);
+                comboBoxJob.Items.Add(job.Name);
             }
             foreach (var enterprise in collectionEnterprises.Enterprises)
             {
@@ -78,15 +78,15 @@ namespace Phonebook
             }
 
             textBoxFIO.Text = (person.Surname + " " + person.Name + " " + person.SecondName).Trim();
-            comboBoxJob.Text = person.Job;
-            comboBoxEnterprise.Text = person.Entretprise;
-            if (!person.Entretprise.Equals(""))
+            comboBoxJob.Text = person.JobName;
+            comboBoxEnterprise.Text = person.DeptName;
+            if (!person.DeptName.Equals(""))
             {
-                textBoxAddress.Text = collectionEnterprises.GetAddressByName(person.Entretprise);
+                //textBoxAddress.Text = collectionEnterprises.GetAddressByName(person.Entretprise);
             }
-            textBoxLandline.Text = person.LandlineNumber.Replace('*', '\n');
-            textBoxInternal.Text = person.InternalNumber.Replace('*', '\n');
-            textBoxMobile.Text = person.CellNumber.Replace('*', '\n');
+            textBoxLandline.Text = person.LandlineNumbers.Replace('*', '\n');
+            textBoxInternal.Text = person.InternalNumbers.Replace('*', '\n');
+            textBoxMobile.Text = person.CellNumbers.Replace('*', '\n');
             textBoxMail.Text = person.Email.Replace('*', '\n');
             image1.Source = person.Photo.Equals("") ? new BitmapImage(new Uri(ImagePath + NullImage)) : new BitmapImage(new Uri(ImagePath + person.Photo));
         }
@@ -118,32 +118,32 @@ namespace Phonebook
                 MessageBox.Show("Не выбрана должность!");
                 return;
             }
-            person.Job = comboBoxJob.Text;
-            int idJob = collectionJobs.GetIdByName(person.Job);
+            person.JobName = comboBoxJob.Text;
+            int idJob = collectionJobs.GetIdByName(person.JobName);
             if (comboBoxEnterprise.SelectedIndex == -1)
             {
                 MessageBox.Show("Не выбрано предприятие!");
                 return;
             }
-            person.Entretprise = comboBoxEnterprise.Text;
-            int idEnterprise = collectionEnterprises.GetIdByName(person.Entretprise);
-            person.CellNumber = textBoxMobile.Text.Replace('\n', '*');
-            person.LandlineNumber = textBoxLandline.Text.Replace('\n', '*');
-            person.InternalNumber = textBoxInternal.Text.Replace('\n', '*');
+            //person.Entretprise = comboBoxEnterprise.Text;
+            //int idEnterprise = collectionEnterprises.GetIdByName(person.Entretprise);
+            person.CellNumbers = textBoxMobile.Text.Replace('\n', '*');
+            person.LandlineNumbers = textBoxLandline.Text.Replace('\n', '*');
+            person.InternalNumbers = textBoxInternal.Text.Replace('\n', '*');
             person.Email = textBoxMail.Text.Replace('\n', '*');
             if (image1.Source != null)
             {
                 person.Photo = ((BitmapImage) image1.Source).UriSource.AbsolutePath.Split('/').Last();
             }
-            if (person.Id == 0)
-            {
-                AccessHelper.InsertPerson(person,idJob,idEnterprise);
-                buttonDelete.Visibility = Visibility.Visible;
-            }
-            else
-            {
-                AccessHelper.UpdatePerson(person, idJob, idEnterprise);
-            }
+            //if (person.Id == 0)
+            //{
+            //    AccessHelper.InsertPerson(person,idJob,idEnterprise);
+            //    buttonDelete.Visibility = Visibility.Visible;
+            //}
+            //else
+            //{
+            //    AccessHelper.UpdatePerson(person, idJob, idEnterprise);
+            //}
         }
 
         private void image1_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -168,7 +168,7 @@ namespace Phonebook
             var result = MessageBox.Show(message, caption, buttons, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
-                AccessHelper.DeletePerson(person.Id);
+                //AccessHelper.DeletePerson(person.Id);
                 Thread.Sleep(200);
                 Close();
             }
