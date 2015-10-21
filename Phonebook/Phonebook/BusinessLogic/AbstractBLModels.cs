@@ -7,7 +7,7 @@ namespace Phonebook.BusinessLogic
 {
     public abstract class AbstractBLModels
     {
-        protected const string ConnectionString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=Phonebook.mdb; Jet OLEDB:Database Password=2159820";
+        public const string ConnectionString = @"Provider=Microsoft.Jet.OLEDB.4.0;Data Source=Phonebook.mdb; Jet OLEDB:Database Password=2159820";
 
         /// <summary>
         /// Получает коллекцию объектов из базы.
@@ -39,7 +39,7 @@ namespace Phonebook.BusinessLogic
         /// Отправляет запрос к базе данных в отдельном потоке.
         /// </summary>
         /// <param name="queryString">Строка запроса.</param>
-        protected static void SendQuery(string queryString)
+        public static void SendQuery(string queryString)
         {
             BackgroundWorker worker = new BackgroundWorker();
             worker.DoWork += delegate

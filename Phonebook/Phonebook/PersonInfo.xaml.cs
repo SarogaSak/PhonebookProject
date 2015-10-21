@@ -20,19 +20,25 @@ namespace Phonebook
         private const string NullImage = "NullImage.png";
 
         private Person person;
+        private readonly int accessLevel;
+
+        private readonly BLPerson blPerson = new BLPerson();
 
         private CollectionJobs collectionJobs;
         private CollectionEnterprises collectionEnterprises;
+        private CollectionDepts collectionDepts;
 
-        public PersonInfo(int accessLevel, Person person)
+        public PersonInfo(int accessLevel, Person person, CollectionEnterprises enterprises, CollectionDepts depts,CollectionJobs jobs)
         {
             InitializeComponent();
             ImagePath = AppDomain.CurrentDomain.BaseDirectory + @"Images\";
 
             this.person = person;
+            this.accessLevel = accessLevel;
 
-            collectionJobs = new CollectionJobs();
-            collectionEnterprises = new CollectionEnterprises();
+            collectionJobs = jobs;
+            collectionEnterprises = enterprises;
+            collectionDepts = depts;
 
             Height -= 50;
             switch (accessLevel)
@@ -43,6 +49,8 @@ namespace Phonebook
                     comboBoxJob.IsEnabled = true;
                     comboBoxEnterprise.IsEditable = false;
                     comboBoxEnterprise.IsEnabled = true;
+                    comboBoxDept.IsEditable = false;
+                    comboBoxDept.IsEnabled = true;
                     textBoxLandline.IsReadOnly = false;
                     textBoxMobile.IsReadOnly = false;
                     textBoxInternal.IsReadOnly = false;
@@ -67,33 +75,47 @@ namespace Phonebook
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-
-            foreach (var job in collectionJobs.Jobs)
+            if (accessLevel == 0)
             {
-                comboBoxJob.Items.Add(job.Name);
+                comboBoxJob.ItemsSource = collectionJobs.Jobs.OrderBy(job => job.Name).Select(job => job.Name);
+                comboBoxEnterprise.ItemsSource = collectionEnterprises.Enterprises.OrderBy(enterprise => enterprise.Name).Select(enterprise => enterprise.Name);
+                FillComboBoxDept(collectionEnterprises.GetIdByName(comboBoxEnterprise.Text));
             }
-            foreach (var enterprise in collectionEnterprises.Enterprises)
-            {
-                comboBoxEnterprise.Items.Add(enterprise.Name);
-            }
+            FillData();
+        }
 
+        /// <summary>
+        /// Заполняет comboBoxDept. 
+        /// </summary>
+        /// <param name="enterpriseId">ID родительского предприятия.</param>
+        private void FillComboBoxDept(int enterpriseId)
+        {
+            comboBoxDept.ItemsSource =
+                collectionDepts.GetDeptsByEnterprise(enterpriseId).OrderBy(dept => dept.Name).Select(dept => dept.Name);
+        }
+
+        private void FillData()
+        {
             textBoxFIO.Text = (person.Surname + " " + person.Name + " " + person.SecondName).Trim();
             comboBoxJob.Text = person.JobName;
-            comboBoxEnterprise.Text = person.DeptName;
+            comboBoxEnterprise.Text = person.EnterpriseName;
+            comboBoxDept.Text = person.DeptName;
             if (!person.DeptName.Equals(""))
             {
-                //textBoxAddress.Text = collectionEnterprises.GetAddressByName(person.Entretprise);
+                textBoxAddress.Text = collectionDepts.GetAddressByName(person.DeptName);
             }
             textBoxLandline.Text = person.LandlineNumbers.Replace('*', '\n');
             textBoxInternal.Text = person.InternalNumbers.Replace('*', '\n');
             textBoxMobile.Text = person.CellNumbers.Replace('*', '\n');
             textBoxMail.Text = person.Email.Replace('*', '\n');
-            image1.Source = person.Photo.Equals("") ? new BitmapImage(new Uri(ImagePath + NullImage)) : new BitmapImage(new Uri(ImagePath + person.Photo));
+            string imageName = person.Photo.Equals("") ? NullImage : person.Photo;
+            LoadImage(imageName);
         }
 
         private void comboBoxEnterprise_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             textBoxAddress.Text = collectionEnterprises.GetAddressByName(e.AddedItems[0].ToString());
+            FillComboBoxDept(collectionEnterprises.GetIdByName(comboBoxEnterprise.SelectedValue.ToString()));
         }
 
         private void buttonSave_Click(object sender, RoutedEventArgs e)
@@ -119,31 +141,36 @@ namespace Phonebook
                 return;
             }
             person.JobName = comboBoxJob.Text;
-            int idJob = collectionJobs.GetIdByName(person.JobName);
+            person.IdJob = collectionJobs.GetIdByName(person.JobName);
             if (comboBoxEnterprise.SelectedIndex == -1)
             {
                 MessageBox.Show("Не выбрано предприятие!");
                 return;
             }
-            //person.Entretprise = comboBoxEnterprise.Text;
-            //int idEnterprise = collectionEnterprises.GetIdByName(person.Entretprise);
+            person.EnterpriseName = comboBoxEnterprise.Text;
+            person.DeptName = comboBoxDept.Text;
+            person.IdDept = collectionDepts.GetIdByName(person.DeptName);
             person.CellNumbers = textBoxMobile.Text.Replace('\n', '*');
             person.LandlineNumbers = textBoxLandline.Text.Replace('\n', '*');
             person.InternalNumbers = textBoxInternal.Text.Replace('\n', '*');
             person.Email = textBoxMail.Text.Replace('\n', '*');
             if (image1.Source != null)
             {
+                string oldImagePath = person.Photo;
                 person.Photo = ((BitmapImage) image1.Source).UriSource.AbsolutePath.Split('/').Last();
+                DeleteOldImage(oldImagePath);
             }
-            //if (person.Id == 0)
-            //{
-            //    AccessHelper.InsertPerson(person,idJob,idEnterprise);
-            //    buttonDelete.Visibility = Visibility.Visible;
-            //}
-            //else
-            //{
-            //    AccessHelper.UpdatePerson(person, idJob, idEnterprise);
-            //}
+            
+            if (person.Id == 0)
+            {
+                blPerson.InsertData(person);
+                //buttonDelete.Visibility = Visibility.Visible;
+                ClearControl();
+            }
+            else
+            {
+                blPerson.UpdateData(person);
+            }
         }
 
         private void image1_MouseDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
@@ -155,24 +182,53 @@ namespace Phonebook
             {
                 string fileName = Guid.NewGuid().ToString();
                 File.Copy(dlg.FileName,ImagePath+fileName);
-                image1.Source = new BitmapImage(new Uri(ImagePath + fileName));
+                LoadImage(fileName);              
             }
         }
 
         private void buttonDelete_Click(object sender, RoutedEventArgs e)
         {
-            string caption = "Внимание";
-            string message = "Вы действительно хотите \nудалить сотрудника из базы?";
+            const string caption = "Внимание";
+            const string message = "Вы действительно хотите \nудалить сотрудника из базы?";
             MessageBoxButton buttons = MessageBoxButton.YesNo;
 
             var result = MessageBox.Show(message, caption, buttons, MessageBoxImage.Question);
             if (result == MessageBoxResult.Yes)
             {
-                //AccessHelper.DeletePerson(person.Id);
+                blPerson.DeleteData(person.Id);
                 Thread.Sleep(200);
                 Close();
             }
         }
 
+        private void ClearControl()
+        {
+            person = new Person();
+            LoadImage(NullImage);
+            textBoxFIO.Text = "";
+            textBoxLandline.Text = "";
+            textBoxInternal.Text = "";
+            textBoxMobile.Text = "";
+            textBoxMail.Text = "";
+        }
+
+        private void DeleteOldImage(string imagePath)
+        {
+            string imageName = imagePath.Split('/').Last();
+            if (!imageName.Equals(NullImage))
+            {
+                File.Delete(ImagePath+imageName);
+            }
+        }
+
+        private void LoadImage(string imageName)
+        {
+            BitmapImage image = new BitmapImage();
+            image.BeginInit();
+            image.CacheOption = BitmapCacheOption.OnLoad;
+            image.UriSource = new Uri(ImagePath + imageName);
+            image.EndInit();
+            image1.Source = image;
+        }
     }
 }

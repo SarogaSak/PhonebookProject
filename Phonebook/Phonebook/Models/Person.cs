@@ -46,6 +46,11 @@
         public string DeptName { get; set; }
 
         /// <summary>
+        /// Название предприятия.
+        /// </summary>
+        public string EnterpriseName { get; set; }
+
+        /// <summary>
         /// Мобильные номера, хранятся через разделитель *.
         /// </summary>
         public string CellNumbers { get; set; }
@@ -87,8 +92,8 @@
         /// <param name="photo">Имя файла с  фото.</param>
         /// <param name="email">Почта, хранятся через разделитель *</param>
         public Person(int id, string surname, string name, string secondName, int idJob, string jobName, int idDept,
-            string deptName, string cellNumbers, string landlineNumbers, string internalNumbers, string photo,
-            string email)
+            string deptName, string enterpriseName, string cellNumbers, string landlineNumbers, string internalNumbers, 
+            string photo, string email)
         {
             Id = id;
             Surname = surname;
@@ -97,6 +102,7 @@
             IdJob = idJob;
             JobName = jobName;
             IdDept = idDept;
+            EnterpriseName = enterpriseName;
             DeptName = deptName;
             CellNumbers = cellNumbers;
             LandlineNumbers = landlineNumbers;
@@ -118,6 +124,7 @@
             JobName = "";
             IdDept = 0;
             DeptName = "";
+            EnterpriseName = "";
             CellNumbers = "";
             LandlineNumbers = "";
             InternalNumbers = "";

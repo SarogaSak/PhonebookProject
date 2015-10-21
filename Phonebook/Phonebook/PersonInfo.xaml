@@ -3,6 +3,18 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         WindowStartupLocation="CenterScreen"
         Title="Информация о сотруднике" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Height="372" Width="696" Loaded="Window_Loaded" ResizeMode="NoResize" Icon="/Phonebook;component/ico.ico">
+    <Window.Resources>
+        <Style x:Key="PersonInfoDefaultControlStyle" TargetType="Control">
+            <Setter Property="Height" Value="24" />
+            <Setter Property="Width" Value="440" />
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontFamily" Value="Times New Roman" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Foreground" Value="Black" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+        </Style>
+    </Window.Resources>
     <Window.Background>
         <ImageBrush ImageSource="/Phonebook;component/Images/1mVZTzYITo81.jpg" />
     </Window.Background>
@@ -12,10 +24,11 @@
                 <DropShadowEffect Opacity="0.7" BlurRadius="20" />
             </Image.Effect>
         </Image>
-        <TextBox Height="24" HorizontalAlignment="Left" Margin="222,28,0,0" Name="textBoxFIO" VerticalAlignment="Top" Width="440" FontWeight="Bold" IsReadOnly="True" FontFamily="Times New Roman" FontSize="14" Grid.ColumnSpan="2" />
-        <ComboBox Height="24" HorizontalAlignment="Left" Margin="222,58,0,0" Name="comboBoxJob" VerticalAlignment="Top" Width="440" IsEditable="True" IsReadOnly="True" IsEnabled="False" FontFamily="Times New Roman" FontSize="14" Grid.ColumnSpan="2" Foreground="Black" />
-        <ComboBox Height="24" HorizontalAlignment="Left" Margin="222,88,0,0" Name="comboBoxEnterprise" VerticalAlignment="Top" Width="440" IsReadOnly="True" IsEditable="True" SelectionChanged="comboBoxEnterprise_SelectionChanged" IsEnabled="False" FontFamily="Times New Roman" FontSize="14" Grid.ColumnSpan="2" Foreground="Black"></ComboBox>
-        <TextBox Height="24" HorizontalAlignment="Left" Margin="222,118,0,0" Name="textBoxAddress" VerticalAlignment="Top" Width="440" IsReadOnly="True" FontFamily="Times New Roman" FontSize="14" Grid.ColumnSpan="2" />
+        <TextBox Margin="222,28,0,0" Name="textBoxFIO"  IsReadOnly="True" Style="{StaticResource PersonInfoDefaultControlStyle}"/>
+        <ComboBox Margin="222,58,0,0" Name="comboBoxJob" IsEditable="True" IsReadOnly="True" IsEnabled="False" Style="{StaticResource PersonInfoDefaultControlStyle}"/>
+        <ComboBox Margin="222,88,0,0" Name="comboBoxEnterprise" IsReadOnly="True" IsEditable="True" SelectionChanged="comboBoxEnterprise_SelectionChanged" IsEnabled="False" Style="{StaticResource PersonInfoDefaultControlStyle}"/>
+        <ComboBox Margin="222,117,0,0" Name="comboBoxDept" IsEditable="True" IsEnabled="False" Style="{StaticResource PersonInfoDefaultControlStyle}"/>
+        <TextBox Margin="222,147,0,0" Name="textBoxAddress" IsReadOnly="True" Style="{StaticResource PersonInfoDefaultControlStyle}"/>
         <GroupBox Header="Городской" Height="104" HorizontalAlignment="Left" Margin="12,169,0,0" Name="groupBoxLandline" VerticalAlignment="Top" Width="145" FontSize="14" Foreground="White" FontFamily="Times New Roman">
             <Grid>
                 <TextBox Name="textBoxLandline" TextWrapping="Wrap" IsReadOnly="True" />
@@ -61,5 +74,6 @@
                 </Style>
             </Button.Style>
         </Button>
+        
     </Grid>
 </Window>

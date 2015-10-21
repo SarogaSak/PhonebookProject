@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading;
@@ -7,6 +6,7 @@ using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using Phonebook.BusinessLogic;
 using Phonebook.CollectionModels;
 using Phonebook.Models;
 
@@ -15,16 +15,20 @@ namespace Phonebook
     /// <summary>
     /// Логика взаимодействия для MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
-        private int accessLevel;
+        private readonly int accessLevel;
+        readonly string userName = Environment.UserDomainName + "/" +Environment.UserName;
 
-        private CollectionPersonnel collectionPersonnel;
-        private CollectionJobs collectionJobs;
-        private CollectionEnterprises collectionEnterprises;
+        private CollectionPersonnel _collectionPersonnel;
+        private CollectionJobs _collectionJobs;
+        private CollectionDepts _collectionDepts;
+        private CollectionEnterprises _collectionEnterprises;
+        private CollectionCurators _collectionCurators;
 
         private const string FIOText = "ФИО";
         private const string JobText = "Должность";
+        private const string DeptText = "Управление/Отдел";
         private const string EnterpriseText = "Предприятие";
         private const string PhoneText = "Тел : ___-__-__";
         private readonly Brush emptyBrush = new SolidColorBrush(Colors.Gray);
@@ -33,7 +37,11 @@ namespace Phonebook
         public MainWindow()
         {
             InitializeComponent();
-            accessLevel = 0;
+
+            UpdateAllData();
+            
+            Title += " (Пользователь: " + userName + ")";
+            accessLevel = Authentication.GetAccessLevel(userName);
             //получаем уровень доступа
             if (accessLevel != 0)
             {
@@ -79,6 +87,25 @@ namespace Phonebook
             }
         }
 
+        private void comboBoxDept_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (comboBoxDept.Text.Equals(DeptText))
+            {
+                comboBoxDept.Text = "";
+                comboBoxDept.Foreground = filledBrush;
+            }
+        }
+
+        private void comboBoxDept_LostFocus(object sender, RoutedEventArgs e)
+        {
+            comboBoxDept.Text = comboBoxDept.Text.Trim();
+            if (comboBoxDept.Text.Equals(string.Empty))
+            {
+                comboBoxDept.Text = DeptText;
+                comboBoxDept.Foreground = emptyBrush;
+            }
+        }
+
         private void comboBoxEnterprise_GotFocus(object sender, RoutedEventArgs e)
         {
             if (comboBoxEnterprise.Text.Equals(EnterpriseText))
@@ -90,30 +117,51 @@ namespace Phonebook
 
         private void comboBoxEnterprise_LostFocus(object sender, RoutedEventArgs e)
         {
-            comboBoxEnterprise.Text = comboBoxEnterprise.Text.Trim();
-            if (comboBoxEnterprise.Text.Equals(string.Empty))
+            string enterpriseName = comboBoxEnterprise.Text.Trim();
+            comboBoxEnterprise.Text = enterpriseName;
+            if (enterpriseName.Equals(string.Empty))
             {
                 comboBoxEnterprise.Text = EnterpriseText;
                 comboBoxEnterprise.Foreground = emptyBrush;
             }
+            FillComboBoxDept(_collectionEnterprises.GetIdByName(enterpriseName));
         }
 
         /// <summary>
         /// Заполняет comboBoxJob. 
         /// </summary>
-        /// <param name="jobs">Коллекция значений для заполнения</param>
-        private void FillComboBoxJob(List<Job> jobs)
+        private void FillComboBoxJob()
         {
-            comboBoxJob.ItemsSource = jobs.Select(job => job.Name);
+            comboBoxJob.ItemsSource = _collectionJobs.Jobs.OrderBy(job => job.Name).Select(job => job.Name);
+        }
+
+        /// <summary>
+        /// Заполняет comboBoxDept. 
+        /// </summary>
+        /// <param name="enterpriseId">ID родительского предприятия.</param>
+        private void FillComboBoxDept(int enterpriseId)
+        {
+            comboBoxDept.ItemsSource = _collectionDepts.GetDeptsByEnterprise(enterpriseId).Select(dept => dept.Name);
+            comboBoxDept.IsEnabled = comboBoxDept.Items.Count != 0;
         }
 
         /// <summary>
         /// Заполняет comboBoxEnterprise.
         /// </summary>
-        /// <param name="enterprises">Коллекция значений для заполнения</param>
-        private void FillComboBoxEnterpise(List<Enterprise> enterprises)
+        private void FillComboBoxEnterpise()
         {
-            comboBoxEnterprise.ItemsSource = enterprises.Select(enterprise => enterprise.Name);
+            comboBoxEnterprise.ItemsSource = _collectionEnterprises.Enterprises.Select(enterprise => enterprise.Name);
+        }
+
+        /// <summary>
+        /// Заполняет сomboBoxCurator.
+        /// </summary>
+        private void FillComboBoxCurator()
+        {
+            var items = _collectionCurators.Curators.Select(curator => curator.FIO).ToList();
+            items.Insert(0,"---Не выбрано---");
+            comboBoxCurator.ItemsSource = items;
+            comboBoxCurator.SelectedIndex = 0;
         }
 
         private void comboBoxJob_KeyDown(object sender, KeyEventArgs e)
@@ -139,7 +187,7 @@ namespace Phonebook
         private void comboBoxJob_KeyUp(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Down || e.Key ==Key.Up || e.Key==Key.Enter) return;
-            comboBoxJob.ItemsSource = collectionJobs.FindJobsForMask(comboBoxJob.Text.ToLower().Trim()).Select(job => job.Name);
+            comboBoxJob.ItemsSource = _collectionJobs.FindJobsForMask(comboBoxJob.Text.ToLower().Trim()).Select(job => job.Name);
         }
 
         private void comboBoxEnterprise_KeyDown(object sender, KeyEventArgs e)
@@ -163,9 +211,13 @@ namespace Phonebook
         }
         private void comboBoxEnterprise_KeyUp(object sender, KeyEventArgs e)
         {
+            if (comboBoxEnterprise.SelectedValue != null && e.Key ==Key.Back)
+            {
+                comboBoxEnterprise.SelectedItem = null;
+            }
             if (e.Key == Key.Down || e.Key == Key.Up || e.Key == Key.Enter) return;
             comboBoxEnterprise.ItemsSource =
-                collectionEnterprises.FindEnterprisesForMask(comboBoxEnterprise.Text.ToLower().Trim())
+                _collectionEnterprises.FindEnterprisesForMask(comboBoxEnterprise.Text.ToLower().Trim())
                     .Select(enterprise => enterprise.Name);
         }
 
@@ -173,12 +225,18 @@ namespace Phonebook
         {
             if (listViewResult.SelectedItem!=null)
             {
-                PersonInfo q = new PersonInfo(accessLevel, collectionPersonnel.FindPersonForId(((ListItem)listViewResult.SelectedItem).Id));
+                Person person = _collectionPersonnel.FindPersonForId(((ListItem) listViewResult.SelectedItem).Id);
+                PersonInfo q = new PersonInfo(accessLevel, person, _collectionEnterprises,_collectionDepts,_collectionJobs);
                 q.Show();
             }
         }
 
         private void buttonClear_Click(object sender, RoutedEventArgs e)
+        {
+            Clear();
+        }
+
+        public void Clear()
         {
             textBoxFIO.Text = FIOText;
             textBoxFIO.Foreground = emptyBrush;
@@ -186,6 +244,8 @@ namespace Phonebook
             comboBoxJob.Foreground = emptyBrush;
             comboBoxEnterprise.Text = EnterpriseText;
             comboBoxEnterprise.Foreground = emptyBrush;
+            comboBoxDept.Text = DeptText;
+            comboBoxDept.Foreground = emptyBrush;
             maskedtextBoxPhone.Text = PhoneText;
             Find();
         }
@@ -197,25 +257,33 @@ namespace Phonebook
             string enterprise = comboBoxEnterprise.Text.Equals(EnterpriseText) ? "" : comboBoxEnterprise.Text.ToLower();
             string number = maskedtextBoxPhone.Text.Equals(PhoneText) ? "" : maskedtextBoxPhone.Text.Remove(0,6);
 
-            List<Person> personnel = collectionPersonnel.FindPersonnel(fio, job, enterprise, number);
-            List<ListItem> items = new List<ListItem>();
-            foreach (var person in personnel)
-            {
-                ListItem newItem = new ListItem(
-                    person.Id,
-                    person.Surname + " " + person.Name + " " + person.SecondName,
-                    person.JobName,
-                    person.DeptName,
-                    person.LandlineNumbers.Replace('*', '\n')
-                    );
-                items.Add(newItem);
-            }
-            listViewResult.ItemsSource = items;
+            CollectionPersonnel personnel = new CollectionPersonnel(_collectionPersonnel.FindPersonnel(fio, job, enterprise, number));
+
+            listViewResult.ItemsSource = personnel.ConvertToListItems();
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(listViewResult.ItemsSource);
-            PropertyGroupDescription groupDescription = new PropertyGroupDescription("Enterprise");
-            PropertyGroupDescription groupDescription2 = new PropertyGroupDescription("Job");
+            PropertyGroupDescription groupDescription = new PropertyGroupDescription("EnterpriseName");
+            PropertyGroupDescription groupDescription2 = new PropertyGroupDescription("DeptName");
             view.GroupDescriptions.Add(groupDescription);
             view.GroupDescriptions.Add(groupDescription2);
+        }
+
+        private void UpdateAllData()
+        {
+            Thread thread = new Thread(new ThreadStart(delegate
+            {
+                _collectionPersonnel = new CollectionPersonnel();
+                _collectionJobs = new CollectionJobs();
+                _collectionDepts = new CollectionDepts();
+                _collectionEnterprises = new CollectionEnterprises();
+                _collectionCurators = new CollectionCurators();
+
+                Dispatcher.Invoke(new Action(FillComboBoxJob));
+                Dispatcher.Invoke(new Action(FillComboBoxEnterpise));
+                Dispatcher.Invoke(new Action(FillComboBoxCurator));
+                Dispatcher.Invoke(new Action(() => FillComboBoxDept(0)));
+                Dispatcher.Invoke(new Action(Clear));
+            }));
+            thread.Start();
         }
 
         private void Window_Closing(object sender, CancelEventArgs e)
@@ -226,21 +294,6 @@ namespace Phonebook
         private void buttonFind_Click(object sender, RoutedEventArgs e)
         {
             Find();
-        }
-
-        private void Window_Activated(object sender, EventArgs e)
-        {
-            Thread thread = new Thread(new ThreadStart(delegate
-            {
-                collectionPersonnel = new CollectionPersonnel();
-                collectionJobs = new CollectionJobs();
-                collectionEnterprises = new CollectionEnterprises();
-
-                Dispatcher.Invoke(new Action(()=>FillComboBoxJob(collectionJobs.Jobs)));
-                Dispatcher.Invoke(new Action(()=>FillComboBoxEnterpise(collectionEnterprises.Enterprises)));
-                Dispatcher.Invoke(new Action(Find));
-            }));
-            thread.Start();
         }
 
         private void MenuItemJob_Click(object sender, RoutedEventArgs e)
@@ -255,25 +308,14 @@ namespace Phonebook
 
         private void MenuItemAdd_Click(object sender, RoutedEventArgs e)
         {
-            new PersonInfo(0, new Person()).Show();
+            new PersonInfo(0, new Person(),_collectionEnterprises,_collectionDepts,_collectionJobs).Show();
         }
-    }
 
-    public class ListItem
-    {
-        public int Id { get; set; }
-        public string FIO { get; set; }
-        public string Job { get; set; }
-        public string Enterprise { get; set; }
-        public string Number { get; set; }
-
-        public ListItem(int id,string fio, string job, string enterprise, string number)
+        private void buttonUpdate_Click(object sender, RoutedEventArgs e)
         {
-            Id = id;
-            FIO = fio;
-            Job = job;
-            Enterprise = enterprise;
-            Number = number;
+            UpdateAllData();
         }
+
+
     }
 }

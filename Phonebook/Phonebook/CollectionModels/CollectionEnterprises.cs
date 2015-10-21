@@ -5,7 +5,7 @@ using Phonebook.Models;
 
 namespace Phonebook.CollectionModels
 {
-    class CollectionEnterprises
+    public class CollectionEnterprises
     {
         /// <summary>
         /// Объект для работы с базой. Таблица Enterprises.
@@ -25,6 +25,7 @@ namespace Phonebook.CollectionModels
         public CollectionEnterprises()
         {
             Enterprises = blEnterprise.GetListData<List<Enterprise>>();
+            Enterprises = SortedList();
         }
 
         /// <summary>
@@ -49,7 +50,10 @@ namespace Phonebook.CollectionModels
         /// <param name="name">Название предприятия.</param>
         public int GetIdByName(string name)
         {
-            return Enterprises.First(enterprise => enterprise.Name.ToLower().Contains(name.ToLower())).Id;
+            var firstOrDefault = Enterprises.FirstOrDefault(enterprise => enterprise.Name.ToLower().Equals(name.ToLower()));
+            if (firstOrDefault != null)
+                return firstOrDefault.Id;
+            return 0;
         }
 
         /// <summary>

@@ -5,7 +5,7 @@ using Phonebook.Models;
 
 namespace Phonebook.CollectionModels
 {
-    class CollectionJobs
+    public class CollectionJobs
     {
         /// <summary>
         /// Объект для работы с базой. Таблица Jobs.
@@ -23,6 +23,7 @@ namespace Phonebook.CollectionModels
         {
             Jobs = blJob.GetListData<List<Job>>();
         }
+
         /// <summary>
         /// Возвращает список должностей с указанной подстрокой в названии.
         /// </summary>
@@ -31,6 +32,7 @@ namespace Phonebook.CollectionModels
         {
             return Jobs.Where(job => job.Name.ToLower().Contains(mask)).ToList();
         }
+
         /// <summary>
         /// Возвращает Id должности по названию.
         /// </summary>
@@ -40,6 +42,9 @@ namespace Phonebook.CollectionModels
             return Jobs.First(jobs => jobs.Name.Contains(name)).Id;
         }
 
+        /// <summary>
+        /// Обновляет значения в базе значениями из коллекции.
+        /// </summary>
         public void Update()
         {
             foreach (Job job in Jobs)
@@ -51,7 +56,7 @@ namespace Phonebook.CollectionModels
         public void InsertNew()
         {
             //int newItemId = AccessHelper.InsertNewJob();
-            //Jobs.Add(new Job(newItemId, "",9999));
+            //Jobs.Add(new JobName(newItemId, "",9999));
             //return newItemId;
         }
 

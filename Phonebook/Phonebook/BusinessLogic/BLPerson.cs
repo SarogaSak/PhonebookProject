@@ -16,8 +16,8 @@ namespace Phonebook.BusinessLogic
             List<Person> persons = new List<Person>();
 
             const string command =
-                "SELECT  Personnel.*, Jobs.Name, Depts.Name " +
-                "FROM Jobs INNER JOIN (Depts INNER JOIN Personnel ON Depts.Id = Personnel.IdDept) ON Jobs.Id = Personnel.IdJob;";
+                "SELECT Personnel.*, Jobs.Name, Depts.Name, Enterprises.Name " +
+                "FROM Enterprises RIGHT JOIN (Jobs RIGHT JOIN (Depts RIGHT JOIN Personnel ON Depts.Id = Personnel.IdDept) ON Jobs.Id = Personnel.IdJob) ON Enterprises.Id = Depts.IdEnterprise";
             OleDbConnection connection = new OleDbConnection(ConnectionString);
             OleDbCommand oleDbCommand = new OleDbCommand(command, connection);
             try
@@ -35,6 +35,7 @@ namespace Phonebook.BusinessLogic
                         GetField<string>(dataReader,"Jobs.Name"),
                         GetField<int>(dataReader,"IdDept"),
                         GetField<string>(dataReader,"Depts.Name"),
+                        GetField<string>(dataReader, "Enterprises.Name"),
                         GetField<string>(dataReader, "CellNumbers"),
                         GetField<string>(dataReader, "LandlineNumbers"),
                         GetField<string>(dataReader, "InternalNumbers"),

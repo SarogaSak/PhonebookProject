@@ -90,19 +90,21 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="BusinessLogic\Authentication.cs" />
     <Compile Include="BusinessLogic\BLCurator.cs" />
     <Compile Include="BusinessLogic\BLDept.cs" />
     <Compile Include="BusinessLogic\BLEnterprise.cs" />
     <Compile Include="BusinessLogic\BLJob.cs" />
     <Compile Include="BusinessLogic\AbstractBLModels.cs" />
     <Compile Include="BusinessLogic\BLPerson.cs" />
+    <Compile Include="CollectionModels\CollectionCurators.cs" />
+    <Compile Include="CollectionModels\CollectionDepts.cs" />
     <Compile Include="CollectionModels\CollectionEnterprises.cs" />
     <Compile Include="CollectionModels\CollectionJobs.cs" />
     <Compile Include="CollectionModels\CollectionPersonnel.cs" />
     <Compile Include="HandbookWindow.xaml.cs">
       <DependentUpon>HandbookWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BusinessLogic\AccessHelper.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>

@@ -11,7 +11,7 @@ namespace Phonebook.BusinessLogic
             List<Curator> curators = new List<Curator>();
 
             const string command = "SELECT Curators.* " +
-                                   "FROM Curators;";
+                                   "FROM Curators ORDER BY SortOrder;";
 
             OleDbConnection connection = new OleDbConnection(ConnectionString);
             OleDbCommand oleDbCommand = new OleDbCommand(command, connection);

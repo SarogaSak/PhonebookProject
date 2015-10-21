@@ -14,7 +14,7 @@ namespace Phonebook.BusinessLogic
             List<Enterprise> enterprises = new List<Enterprise>();
 
             const string command = "SELECT Enterprises.*, Curators.FIO " +
-                                   "FROM Curators INNER JOIN Enterprises ON Curators.Id=Enterprises.IdCurator " +
+                                   "FROM Curators RIGHT JOIN Enterprises ON Curators.Id=Enterprises.IdCurator " +
                                    "ORDER BY IdCurator;";
             OleDbConnection connection = new OleDbConnection(ConnectionString);
             OleDbCommand oleDbCommand = new OleDbCommand(command, connection);

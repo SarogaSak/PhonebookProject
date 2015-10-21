@@ -3,7 +3,7 @@
     /// <summary>
     /// Управление/отдел/сектор.
     /// </summary>
-    class Dept
+    public class Dept
     {
         /// <summary>
         /// ID.
