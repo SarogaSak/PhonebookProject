@@ -13,11 +13,11 @@
     <Grid>
         <TextBox Margin="12,13,0,0" Name="textBoxFIO" Width="397" Text="ФИО" GotFocus="textBoxFIO_GotFocus" LostFocus="textBoxFIO_LostFocus" Style="{StaticResource DefaultControlStyle}" />
         <ComboBox Margin="12,40,0,0" Name="comboBoxJob" Width="503" IsEditable="True" Text="Должность" GotFocus="comboBoxJob_GotFocus" LostFocus="comboBoxJob_LostFocus" KeyUp="comboBoxJob_KeyUp" KeyDown="comboBoxJob_KeyDown" IsTextSearchEnabled="False" Style="{StaticResource DefaultControlStyle}"/>
-        <ComboBox Margin="685,60,0,0" Name="comboBoxDept" Width="232" Style="{StaticResource DefaultControlStyle}" IsEditable="True" Text="Управление/Отдел" LostFocus="comboBoxDept_LostFocus" GotFocus="comboBoxDept_GotFocus" />
-        <ComboBox Margin="12,67,0,0" Name="comboBoxEnterprise" Width="503" IsEditable="True" Text="Предприятие" KeyDown="comboBoxEnterprise_KeyDown" GotFocus="comboBoxEnterprise_GotFocus" LostFocus="comboBoxEnterprise_LostFocus" KeyUp="comboBoxEnterprise_KeyUp" IsTextSearchEnabled="False" Style="{StaticResource DefaultControlStyle}" />
+        <ComboBox Margin="685,60,0,0" Name="comboBoxDept" Width="232" Style="{StaticResource DefaultControlStyle}" IsEditable="True" Text="Управление/Отдел" LostFocus="comboBoxDept_LostFocus" GotFocus="comboBoxDept_GotFocus" IsEnabled="False" />
+        <ComboBox Margin="12,67,0,0" Name="comboBoxEnterprise" Width="503" IsEditable="True" Text="Предприятие" KeyDown="comboBoxEnterprise_KeyDown" GotFocus="comboBoxEnterprise_GotFocus" LostFocus="comboBoxEnterprise_LostFocus" KeyUp="comboBoxEnterprise_KeyUp" IsTextSearchEnabled="False" Style="{StaticResource DefaultControlStyle}" SelectionChanged="comboBoxEnterprise_SelectionChanged" />
         <xctk:MaskedTextBox Margin="415,13,0,0" Width="100" Mask="Тел : 000-00-00" HorizontalContentAlignment="Right" Name="maskedtextBoxPhone" Style="{StaticResource DefaultControlStyle}"/>
         <Label Content="Куратор :" Margin="12,91,0,0" Name="labelCurator" Width="105" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" FontSize="16" Foreground="#FFFFFCFC" />
-        <ComboBox Margin="96,97,0,0" Name="comboBoxCurator" Width="419" Style="{StaticResource DefaultControlStyle}" Foreground="Black" />
+        <ComboBox Margin="96,97,0,0" Name="comboBoxCurator" Width="419" Style="{StaticResource DefaultControlStyle}" Foreground="Black" SelectionChanged="comboBoxCurator_SelectionChanged" />
         <ListView Margin="12,133,12,12" Name="listViewResult" MouseDoubleClick="listViewResult_MouseDoubleClick" SelectionMode="Single" Foreground="Black" FontSize="16" FontWeight="Bold" Opacity="0.85" FontFamily="Times New Roman">
             <ListView.View>
                 <GridView>
@@ -30,7 +30,7 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Должность" Width="400">
+                    <GridViewColumn Header="Должность" Width="740">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -58,10 +58,10 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate>
-                                        <Expander IsExpanded="True">
+                                        <Expander IsExpanded="False">
                                             <Expander.Header>
                                                 <StackPanel Orientation="Horizontal">
-                                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="Black" FontSize="22" VerticalAlignment="Bottom" TextDecorations="Underline"/>
+                                                    <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="Black" FontSize="20" VerticalAlignment="Bottom" TextDecorations="Underline"/>
                                                 </StackPanel>
                                             </Expander.Header>
                                             <Expander.Content>
@@ -93,6 +93,8 @@
             <MenuItem Header="Редактировать справочники" FontSize="16" FontFamily="Times New Roman" Background="{x:Null}" Focusable="False" BorderBrush="#FF707070">
                 <MenuItem Header="Должности" Click="MenuItemJob_Click" />
                 <MenuItem Header="Предприятия" Click="MenuItemEnterprise_Click" />
+                <MenuItem Header="Управления/отделы" Click="MenuItemDept_Click" />
+                <MenuItem Header="Кураторы" Click="MenuItemCurator_Click" />
                 <MenuItem Header="Добавить сотрудника" Click="MenuItemAdd_Click" />
             </MenuItem>
         </Menu>
@@ -125,5 +127,6 @@
         	</Button.Background>
         </Button>
         <Button Content="Обновить" Height="25" HorizontalAlignment="Left" Margin="521,12,0,0" Name="buttonUpdate" VerticalAlignment="Top" Width="122" Click="buttonUpdate_Click" />
+        <Button Content="Export to Word" Height="26" HorizontalAlignment="Left" Margin="670,95,0,0" Name="buttonExport" VerticalAlignment="Top" Width="147" Click="buttonExport_Click" />
     </Grid>
 </Window>

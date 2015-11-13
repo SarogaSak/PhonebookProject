@@ -13,6 +13,14 @@
             <Setter Property="VerticalAlignment" Value="Top" />
             <Setter Property="HorizontalAlignment" Value="Left" />
         </Style>
-        
+
+        <Style x:Key="CenterGridHeaderStyle" TargetType="DataGridColumnHeader">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+            <Setter Property="FontWeight" Value="Bold"></Setter>
+        </Style>
+        <Style x:Key="RightGridTextStyle" TargetType="DataGridCell">
+            <Setter Property="HorizontalAlignment" Value="Right"></Setter>
+        </Style>
+
     </Application.Resources>
 </Application>

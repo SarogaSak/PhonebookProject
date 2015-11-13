@@ -15,7 +15,7 @@ namespace Phonebook.BusinessLogic
 
             const string command = "SELECT Enterprises.*, Curators.FIO " +
                                    "FROM Curators RIGHT JOIN Enterprises ON Curators.Id=Enterprises.IdCurator " +
-                                   "ORDER BY IdCurator;";
+                                   "ORDER BY IdCurator, Enterprises.SortOrder;";
             OleDbConnection connection = new OleDbConnection(ConnectionString);
             OleDbCommand oleDbCommand = new OleDbCommand(command, connection);
             try

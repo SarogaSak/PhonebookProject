@@ -1,0 +1,31 @@
+﻿<Window x:Class="Phonebook.DeptsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Отделы/Управления" Height="700" Width="1000">
+    <Grid>
+        <Button Content="Удалить отдел/управление" Height="25" HorizontalAlignment="Left" Margin="765,624,0,0" Name="buttonDeleteDept" VerticalAlignment="Top" Width="92" Click="buttonDeleteDept_Click" />
+        <Button Content="Сохранить" Height="25" HorizontalAlignment="Left" Margin="874,624,0,0" Name="buttonSaveAll" VerticalAlignment="Top" Width="92" Click="buttonSaveAll_Click" />
+        <DataGrid AutoGenerateColumns="False" Height="606" HorizontalAlignment="Left" Margin="12,12,0,0" Name="dataGridDepts" VerticalAlignment="Top" Width="954">
+            <DataGrid.Columns>
+                <DataGridTextColumn HeaderStyle="{StaticResource CenterGridHeaderStyle}" 
+                                    Header="ID" 
+                                    Binding="{Binding Id}" Width="30" IsReadOnly="True" CanUserResize="False" />
+                <DataGridTextColumn HeaderStyle="{StaticResource CenterGridHeaderStyle}" 
+                                    Header="Название" 
+                                    Binding="{Binding Name}" Width="470" />
+                <DataGridTextColumn HeaderStyle="{StaticResource CenterGridHeaderStyle}" 
+                                    Header="Адрес" 
+                                    Binding="{Binding Address}" Width="200" />
+                <DataGridTextColumn HeaderStyle="{StaticResource CenterGridHeaderStyle}" 
+                                    Header="         ID&#x000A;предприятия" 
+                                    Binding="{Binding IdEnterprise}" Width="90" />
+                <DataGridTextColumn HeaderStyle="{StaticResource CenterGridHeaderStyle}" 
+                                    Header="      ID&#x000A;куратора" 
+                                    Binding="{Binding IdCurator}" Width="70" />
+                <DataGridTextColumn HeaderStyle="{StaticResource CenterGridHeaderStyle}" 
+                                    Header="  Порядок&#x000A;сортировки" 
+                                    Binding="{Binding SortOrder}" Width="90" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

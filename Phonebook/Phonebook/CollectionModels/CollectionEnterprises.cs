@@ -5,6 +5,9 @@ using Phonebook.Models;
 
 namespace Phonebook.CollectionModels
 {
+    /// <summary>
+    /// Коллекция предприятий.
+    /// </summary>
     public class CollectionEnterprises
     {
         /// <summary>
@@ -25,7 +28,7 @@ namespace Phonebook.CollectionModels
         public CollectionEnterprises()
         {
             Enterprises = blEnterprise.GetListData<List<Enterprise>>();
-            Enterprises = SortedList();
+            //Enterprises = SortedList();
         }
 
         /// <summary>
@@ -59,21 +62,35 @@ namespace Phonebook.CollectionModels
         /// <summary>
         /// Обновляет све записи в в таблице Enterprises значениями из коллекции.
         /// </summary>
-        public void Update()
+        public void Update(CollectionEnterprises oldCollection)
         {
             foreach (var enterprise in Enterprises)
             {
-                blEnterprise.UpdateData(enterprise);
+                if (enterprise.Id == 0)
+                {
+                    blEnterprise.InsertData(enterprise);
+                }
+                else
+                {
+                    if (!oldCollection.GetEnterprisesById(enterprise.Id).Equals(enterprise))
+                    {
+                        blEnterprise.UpdateData(enterprise);
+                    }
+                }
             }
         }
+
+        private Enterprise GetEnterprisesById(int id)
+        {
+            return Enterprises.First(enterprise => enterprise.Id == id);
+        }
+
         /// <summary>
         /// Вставляет новую запись в таблицу Enterprises.
         /// </summary>
-        public void InsertNew()
+        public void InsertNew(Enterprise newEnterprise)
         {
-            //int newItemId = AccessHelper.InsertNewEnterprise();
-            //Enterprises.Add(new Enterprise(newItemId, "", "",9999));
-            //return newItemId;
+            blEnterprise.InsertData(newEnterprise);
         }
 
         /// <summary>
@@ -89,10 +106,27 @@ namespace Phonebook.CollectionModels
         /// <summary>
         /// Сортирует предприятия по коду сортировки.
         /// </summary>
-        /// <returns></returns>
         public List<Enterprise> SortedList()
         {
             return Enterprises.OrderBy(enterprise => enterprise.SortOrder).ToList();
+        }
+
+        /// <summary>
+        /// Получает список предприятий по ID куратора.
+        /// </summary>
+        /// <param name="id">ID куратора.</param>
+        public List<Enterprise> GetEnterprisesByCurator(int id)
+        {
+            return Enterprises.Where(enterprise => enterprise.IdCurator == id).ToList();
+        }
+
+        /// <summary>
+        /// Получает список предприятий по ФИО куратора.
+        /// </summary>
+        /// <param name="fio">ФИО куратора.</param>
+        public List<Enterprise> GetEnterprisesByCurator(string fio)
+        {
+            return Enterprises.Where(enterprise => enterprise.CuratorFio.Equals(fio)).ToList();
         }
     }
 }

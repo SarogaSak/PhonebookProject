@@ -6,12 +6,14 @@ namespace Phonebook.BusinessLogic
 {
     class BLDept : AbstractBLModels
     {
+        private List<Dept> depts;
+
         public override T GetListData<T>()
         {
-            List<Dept> depts = new List<Dept>();
+            depts = new List<Dept>();
 
             const string command = "SELECT Depts.*, Enterprises.Name, Curators.FIO " +
-                                   "FROM Curators INNER JOIN (Enterprises INNER JOIN Depts ON Enterprises.Id=Depts.IdEnterprise) ON Curators.Id=Depts.IdCurator " +
+                                   "FROM Curators RIGHT JOIN (Enterprises INNER JOIN Depts ON Enterprises.Id=Depts.IdEnterprise) ON Curators.Id=Depts.IdCurator " +
                                    "ORDER BY Curators.Id, Enterprises.Id, Depts.SortOrder;";
 
             OleDbConnection connection = new OleDbConnection(ConnectionString);
@@ -23,14 +25,14 @@ namespace Phonebook.BusinessLogic
                 while (dataReader.Read())
                 {
                     depts.Add(new Dept(
-                        GetField<int>(dataReader,"Id"),
-                        GetField<string>(dataReader,"Depts.Name"),
-                        GetField<string>(dataReader,"Address"),
-                        GetField<int>(dataReader,"SortOrder"),
+                        GetField<int>(dataReader, "Id"),
+                        GetField<string>(dataReader, "Depts.Name"),
+                        GetField<string>(dataReader, "Address"),
+                        GetField<int>(dataReader, "SortOrder"),
                         GetField<int>(dataReader, "IdEnterprise"),
                         GetField<string>(dataReader, "Enterprises.Name"),
-                        GetField<int>(dataReader,"IdCurator"),
-                        GetField<string>(dataReader,"FIO")));
+                        GetField<int>(dataReader, "IdCurator"),
+                        GetField<string>(dataReader, "FIO")));
                 }
             }
             finally

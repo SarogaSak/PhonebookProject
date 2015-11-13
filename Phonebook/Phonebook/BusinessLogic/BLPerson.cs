@@ -10,14 +10,14 @@ namespace Phonebook.BusinessLogic
         /// Получает список всех сотрудников.
         /// </summary>
         /// <typeparam name="T">"ListPerson"</typeparam>
-        /// <returns></returns>
         public override T GetListData<T>()
         {
             List<Person> persons = new List<Person>();
 
             const string command =
                 "SELECT Personnel.*, Jobs.Name, Depts.Name, Enterprises.Name " +
-                "FROM Enterprises RIGHT JOIN (Jobs RIGHT JOIN (Depts RIGHT JOIN Personnel ON Depts.Id = Personnel.IdDept) ON Jobs.Id = Personnel.IdJob) ON Enterprises.Id = Depts.IdEnterprise";
+                "FROM Enterprises RIGHT JOIN (Jobs RIGHT JOIN (Depts RIGHT JOIN Personnel ON Depts.Id = Personnel.IdDept) ON Jobs.Id = Personnel.IdJob) ON Enterprises.Id = Depts.IdEnterprise " +
+                "ORDER BY Enterprises.SortOrder, Depts.SortOrder, Jobs.SortOrder;";
             OleDbConnection connection = new OleDbConnection(ConnectionString);
             OleDbCommand oleDbCommand = new OleDbCommand(command, connection);
             try

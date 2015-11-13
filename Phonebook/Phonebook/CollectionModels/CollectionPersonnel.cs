@@ -26,13 +26,14 @@ namespace Phonebook.CollectionModels
             Personnel = blPersonnel.GetListData<List<Person>>();
         }
 
-        public List<Person> FindPersonnel(string fio, string jobName, string deptName, string phone)
+        public List<Person> FindPersonnel(string fio, string jobName, string enterpriseName, string deptName, string phone)
         {
             return
                 Personnel.Where(
                     person =>
                         person.Surname.ToLower().Contains(fio) && 
                         person.JobName.ToLower().Contains(jobName) &&
+                        person.EnterpriseName.ToLower().Contains(enterpriseName) &&
                         person.DeptName.ToLower().Contains(deptName) && 
                         person.LandlineNumbers.Contains(phone)).ToList();
         }

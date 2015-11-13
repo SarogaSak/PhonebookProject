@@ -44,6 +44,8 @@ namespace Phonebook
             switch (accessLevel)
             {
                 case 0:
+                    Activated += Window_Activated;
+
                     textBoxFIO.IsReadOnly = false;
                     comboBoxJob.IsEditable = false;
                     comboBoxJob.IsEnabled = true;
@@ -149,7 +151,7 @@ namespace Phonebook
             }
             person.EnterpriseName = comboBoxEnterprise.Text;
             person.DeptName = comboBoxDept.Text;
-            person.IdDept = collectionDepts.GetIdByName(person.DeptName);
+            person.IdDept = collectionDepts.GetIdByName(person.DeptName, person.EnterpriseName);
             person.CellNumbers = textBoxMobile.Text.Replace('\n', '*');
             person.LandlineNumbers = textBoxLandline.Text.Replace('\n', '*');
             person.InternalNumbers = textBoxInternal.Text.Replace('\n', '*');
@@ -215,7 +217,7 @@ namespace Phonebook
         private void DeleteOldImage(string imagePath)
         {
             string imageName = imagePath.Split('/').Last();
-            if (!imageName.Equals(NullImage))
+            if (!imageName.Equals(NullImage)&&!imageName.Equals(""))
             {
                 File.Delete(ImagePath+imageName);
             }
@@ -229,6 +231,20 @@ namespace Phonebook
             image.UriSource = new Uri(ImagePath + imageName);
             image.EndInit();
             image1.Source = image;
+        }
+
+        private void buttonOpenJobsWindow_Click(object sender, RoutedEventArgs e)
+        {
+            new JobsWindow().Show();
+        }
+
+        private void Window_Activated(object sender, EventArgs e)
+        {
+            collectionJobs=new CollectionJobs();
+            comboBoxJob.ItemsSource = collectionJobs.Jobs.OrderBy(job => job.Name).Select(job => job.Name);
+            Topmost = true;
+            Topmost = false;
+            Focus();
         }
     }
 }

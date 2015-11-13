@@ -53,5 +53,26 @@
             IdCurator = idCurator;
             CuratorFio = curatorFio;
         }
+
+        public Enterprise()
+        {
+            Id = 0;
+            Name = "";
+            Address = "";
+            SortOrder = 99999;
+            IdCurator = 99999;
+        }
+
+        /// <summary>
+        /// Сравнивает объект с текущим.
+        /// </summary>
+        /// <param name="enterprise">Объект для сравнения.</param>
+        public bool Equals(Enterprise enterprise)
+        {
+            return (Name.Equals(enterprise.Name) &&
+                    Address.Equals(enterprise.Address) &&
+                    SortOrder == enterprise.SortOrder &&
+                    IdCurator == enterprise.IdCurator);
+        }
     }
 }

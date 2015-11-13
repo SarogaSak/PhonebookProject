@@ -1,14 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using Phonebook.BusinessLogic;
 using Phonebook.CollectionModels;
 using Phonebook.Models;
+using ListItem = Phonebook.CollectionModels.ListItem;
 
 namespace Phonebook
 {
@@ -28,6 +31,7 @@ namespace Phonebook
 
         private const string FIOText = "ФИО";
         private const string JobText = "Должность";
+        private const string CuratorText = "---Не выбрано---";
         private const string DeptText = "Управление/Отдел";
         private const string EnterpriseText = "Предприятие";
         private const string PhoneText = "Тел : ___-__-__";
@@ -124,7 +128,6 @@ namespace Phonebook
                 comboBoxEnterprise.Text = EnterpriseText;
                 comboBoxEnterprise.Foreground = emptyBrush;
             }
-            FillComboBoxDept(_collectionEnterprises.GetIdByName(enterpriseName));
         }
 
         /// <summary>
@@ -141,16 +144,20 @@ namespace Phonebook
         /// <param name="enterpriseId">ID родительского предприятия.</param>
         private void FillComboBoxDept(int enterpriseId)
         {
-            comboBoxDept.ItemsSource = _collectionDepts.GetDeptsByEnterprise(enterpriseId).Select(dept => dept.Name);
+            comboBoxDept.ItemsSource =
+                _collectionDepts.GetDeptsByEnterprise(enterpriseId)
+                    .Where(dept => !dept.Name.Equals("Отдел"))
+                    .OrderBy(dept => dept.Name)
+                    .Select(dept => dept.Name);
             comboBoxDept.IsEnabled = comboBoxDept.Items.Count != 0;
         }
 
         /// <summary>
         /// Заполняет comboBoxEnterprise.
         /// </summary>
-        private void FillComboBoxEnterpise()
+        private void FillComboBoxEnterpise(List<Enterprise> enterprisesList)
         {
-            comboBoxEnterprise.ItemsSource = _collectionEnterprises.Enterprises.Select(enterprise => enterprise.Name);
+            comboBoxEnterprise.ItemsSource = enterprisesList.Select(enterprise => enterprise.Name);
         }
 
         /// <summary>
@@ -159,7 +166,7 @@ namespace Phonebook
         private void FillComboBoxCurator()
         {
             var items = _collectionCurators.Curators.Select(curator => curator.FIO).ToList();
-            items.Insert(0,"---Не выбрано---");
+            items.Insert(0,CuratorText);
             comboBoxCurator.ItemsSource = items;
             comboBoxCurator.SelectedIndex = 0;
         }
@@ -255,9 +262,10 @@ namespace Phonebook
             string fio = textBoxFIO.Text.Equals(FIOText) ? "" : textBoxFIO.Text.ToLower();
             string job = comboBoxJob.Text.Equals(JobText) ? "" : comboBoxJob.Text.ToLower();
             string enterprise = comboBoxEnterprise.Text.Equals(EnterpriseText) ? "" : comboBoxEnterprise.Text.ToLower();
+            string dept = comboBoxDept.Text.Equals(DeptText) ? "" : comboBoxDept.Text.ToLower();
             string number = maskedtextBoxPhone.Text.Equals(PhoneText) ? "" : maskedtextBoxPhone.Text.Remove(0,6);
 
-            CollectionPersonnel personnel = new CollectionPersonnel(_collectionPersonnel.FindPersonnel(fio, job, enterprise, number));
+            CollectionPersonnel personnel = new CollectionPersonnel(_collectionPersonnel.FindPersonnel(fio, job, enterprise, dept, number));
 
             listViewResult.ItemsSource = personnel.ConvertToListItems();
             CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(listViewResult.ItemsSource);
@@ -278,9 +286,8 @@ namespace Phonebook
                 _collectionCurators = new CollectionCurators();
 
                 Dispatcher.Invoke(new Action(FillComboBoxJob));
-                Dispatcher.Invoke(new Action(FillComboBoxEnterpise));
+                Dispatcher.Invoke(new Action(()=>FillComboBoxEnterpise(_collectionEnterprises.Enterprises)));
                 Dispatcher.Invoke(new Action(FillComboBoxCurator));
-                Dispatcher.Invoke(new Action(() => FillComboBoxDept(0)));
                 Dispatcher.Invoke(new Action(Clear));
             }));
             thread.Start();
@@ -298,12 +305,22 @@ namespace Phonebook
 
         private void MenuItemJob_Click(object sender, RoutedEventArgs e)
         {
-            new HandbookWindow(0).Show();
+            new JobsWindow().Show();
         }
 
         private void MenuItemEnterprise_Click(object sender, RoutedEventArgs e)
         {
-            new HandbookWindow(1).Show();
+            new EnterprisesWindow().Show();
+        }
+
+        private void MenuItemDept_Click(object sender, RoutedEventArgs e)
+        {
+            new DeptsWindow().Show();
+        }
+
+        private void MenuItemCurator_Click(object sender, RoutedEventArgs e)
+        {
+            
         }
 
         private void MenuItemAdd_Click(object sender, RoutedEventArgs e)
@@ -316,6 +333,27 @@ namespace Phonebook
             UpdateAllData();
         }
 
+        private void comboBoxCurator_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            if (comboBoxCurator.SelectedIndex != 0)
+            {
+                string fioCurator = comboBoxCurator.SelectedValue.ToString();
+                FillComboBoxEnterpise(_collectionEnterprises.GetEnterprisesByCurator(fioCurator));
+            }
+            else
+            {
+                FillComboBoxEnterpise(_collectionEnterprises.Enterprises);
+            }
+        }
 
+        private void comboBoxEnterprise_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
+        {
+            FillComboBoxDept(_collectionEnterprises.GetIdByName(comboBoxEnterprise.SelectedValue.ToString()));
+        }
+
+        private void buttonExport_Click(object sender, RoutedEventArgs e)
+        {
+            WordHelper.CreateDocument();
+        }
     }
 }

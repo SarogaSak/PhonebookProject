@@ -5,6 +5,9 @@ using Phonebook.Models;
 
 namespace Phonebook.CollectionModels
 {
+    /// <summary>
+    /// Коллекция должностей.
+    /// </summary>
     public class CollectionJobs
     {
         /// <summary>
@@ -39,36 +42,60 @@ namespace Phonebook.CollectionModels
         /// <param name="name">Название должности.</param>
         public int GetIdByName(string name)
         {
-            return Jobs.First(jobs => jobs.Name.Contains(name)).Id;
+            return Jobs.First(jobs => jobs.Name.Equals(name)).Id;
+        }
+
+        public Job GetJobById(int id)
+        {
+            return Jobs.First(jobs => jobs.Id == id);
         }
 
         /// <summary>
         /// Обновляет значения в базе значениями из коллекции.
         /// </summary>
-        public void Update()
+        public void Update(CollectionJobs oldCollection)
         {
-            foreach (Job job in Jobs)
+            foreach (var job in Jobs)
             {
-                blJob.UpdateData(job);
+                if (job.Id == 0)
+                {
+                    blJob.InsertData(job);
+                }
+                else
+                {
+                    if (!oldCollection.GetJobById(job.Id).Equals(job))
+                    {
+                        blJob.UpdateData(job);
+                    }
+                }
             }
         }
 
-        public void InsertNew()
+        /// <summary>
+        /// Вставляет новую запись в таблицу Jobs.
+        /// </summary>
+        public void InsertNew(Job newJob)
         {
-            //int newItemId = AccessHelper.InsertNewJob();
-            //Jobs.Add(new JobName(newItemId, "",9999));
-            //return newItemId;
+            blJob.InsertData(newJob);
         }
 
+        /// <summary>
+        /// Удаляет запись из таблицы Jobs с указанным Id.
+        /// </summary>
+        /// <param name="id">Id записи для удаления.</param>
         public void DeleteById(int id)
         {
             blJob.DeleteData(id);
             Jobs.Remove(Jobs.First(jobs => jobs.Id == id));
         }
 
+        /// <summary>
+        /// Сортирует должности по коду сортировки.
+        /// </summary>
         public List<Job> SortedList()
         {
             return Jobs.OrderBy(job => job.SortOrder).ToList();
         }
+
     }
 }
