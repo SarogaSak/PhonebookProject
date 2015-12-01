@@ -5,11 +5,11 @@ using System.Linq;
 using System.Threading;
 using System.Windows;
 using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using Phonebook.BusinessLogic;
 using Phonebook.CollectionModels;
+using Phonebook.EditWindows;
 using Phonebook.Models;
 using ListItem = Phonebook.CollectionModels.ListItem;
 
@@ -42,14 +42,24 @@ namespace Phonebook
         {
             InitializeComponent();
 
+            buttonUpdate.MouseLeave += MouseEvents.MouseLeave;
+            buttonUpdate.MouseMove += MouseEvents.MouseMove;
+            buttonClear.MouseLeave += MouseEvents.MouseLeave;
+            buttonClear.MouseMove += MouseEvents.MouseMove;
+            buttonFind.MouseLeave += MouseEvents.MouseLeave;
+            buttonFind.MouseMove += MouseEvents.MouseMove;
+            buttonExport.MouseLeave += MouseEvents.MouseLeave;
+            buttonExport.MouseMove += MouseEvents.MouseMove;
+
             UpdateAllData();
-            
+
             Title += " (Пользователь: " + userName + ")";
             accessLevel = Authentication.GetAccessLevel(userName);
             //получаем уровень доступа
             if (accessLevel != 0)
             {
                 menuEdit.Visibility = Visibility.Hidden;
+                buttonUpdate.Visibility = Visibility.Hidden;
             }
         }
 
@@ -254,7 +264,16 @@ namespace Phonebook
             comboBoxDept.Text = DeptText;
             comboBoxDept.Foreground = emptyBrush;
             maskedtextBoxPhone.Text = PhoneText;
-            Find();
+
+            if (comboBoxCurator.SelectedIndex == 0)
+            {
+                Find();
+            }
+            else
+            {
+                comboBoxCurator.SelectedIndex = 0;
+            }
+            
         }
 
         private void Find()
@@ -320,7 +339,7 @@ namespace Phonebook
 
         private void MenuItemCurator_Click(object sender, RoutedEventArgs e)
         {
-            
+            new CuratorsWindow().Show();
         }
 
         private void MenuItemAdd_Click(object sender, RoutedEventArgs e)
@@ -338,11 +357,25 @@ namespace Phonebook
             if (comboBoxCurator.SelectedIndex != 0)
             {
                 string fioCurator = comboBoxCurator.SelectedValue.ToString();
-                FillComboBoxEnterpise(_collectionEnterprises.GetEnterprisesByCurator(fioCurator));
+                List<Dept> depts = _collectionDepts.GetDeptByCurator(fioCurator);
+
+                CollectionPersonnel personnel = new CollectionPersonnel(_collectionPersonnel.FindPersonnel(depts));
+
+                listViewResult.ItemsSource = personnel.ConvertToListItems();
+                CollectionView view = (CollectionView)CollectionViewSource.GetDefaultView(listViewResult.ItemsSource);
+                PropertyGroupDescription groupDescription = new PropertyGroupDescription("EnterpriseName");
+                PropertyGroupDescription groupDescription2 = new PropertyGroupDescription("DeptName");
+                view.GroupDescriptions.Add(groupDescription);
+                view.GroupDescriptions.Add(groupDescription2);
+
+                comboBoxEnterprise.Visibility = Visibility.Hidden;
+                comboBoxDept.Visibility = Visibility.Hidden;
             }
             else
             {
-                FillComboBoxEnterpise(_collectionEnterprises.Enterprises);
+                comboBoxEnterprise.Visibility = Visibility.Visible;
+                comboBoxDept.Visibility = Visibility.Visible;
+                Find();
             }
         }
 
@@ -353,7 +386,12 @@ namespace Phonebook
 
         private void buttonExport_Click(object sender, RoutedEventArgs e)
         {
-            WordHelper.CreateDocument();
+            WordHelper.CreateDocument(_collectionPersonnel.Personnel);
+        }
+
+        private void MenuItemUser_Click(object sender, RoutedEventArgs e)
+        {
+            new UsersWindow().Show();
         }
     }
 }

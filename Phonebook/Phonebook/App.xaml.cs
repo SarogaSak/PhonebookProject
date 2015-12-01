@@ -8,7 +8,7 @@ namespace Phonebook
     /// </summary>
     public partial class App : Application
     {
-        SplashScreen splash = new SplashScreen("LoadScreen.png");
+        SplashScreen splash = new SplashScreen("Minsk_Shadow.png");
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {

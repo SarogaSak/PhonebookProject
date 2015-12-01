@@ -83,6 +83,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="BusinessLogic\BLUser.cs" />
+    <Compile Include="CollectionModels\CollectionUsers.cs" />
+    <Compile Include="EditWindows\UsersWindow.xaml.cs">
+      <DependentUpon>UsersWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\User.cs" />
+    <Compile Include="MouseEvents.cs" />
     <Compile Include="WordHelper.cs" />
     <Page Include="EditWindows\CuratorsWindow.xaml">
       <SubType>Designer</SubType>
@@ -97,6 +104,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="EditWindows\JobsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="EditWindows\UsersWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -184,13 +195,16 @@
     <Resource Include="Images\1mVZTzYITo81.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <SplashScreen Include="LoadScreen.png" />
-  </ItemGroup>
-  <ItemGroup>
     <Resource Include="ico.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Images\LoadScreen.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <SplashScreen Include="Minsk_Shadow.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\InvBackground.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Windows;
+using System.Windows.Controls;
 using Phonebook.CollectionModels;
 using Phonebook.Models;
+using System.Windows.Media;
 
 namespace Phonebook
 {
@@ -18,6 +20,11 @@ namespace Phonebook
         public EnterprisesWindow()
         {
             InitializeComponent();
+
+            buttonDelete.MouseLeave += MouseEvents.MouseLeave;
+            buttonDelete.MouseMove += MouseEvents.MouseMove;
+            buttonSaveAll.MouseLeave += MouseEvents.MouseLeave;
+            buttonSaveAll.MouseMove += MouseEvents.MouseMove;
 
             collectionEnterprises = new CollectionEnterprises();
             dataGridEnterprises.ItemsSource = collectionEnterprises.Enterprises;

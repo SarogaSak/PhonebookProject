@@ -38,6 +38,17 @@ namespace Phonebook.CollectionModels
                         person.LandlineNumbers.Contains(phone)).ToList();
         }
 
+        public List<Person> FindPersonnel(List<Dept> depts)
+        {
+            List<Person> persons = new List<Person>();
+            foreach (var dept in depts)
+            {
+                List<Person> temp = Personnel.Where(person => person.IdDept==dept.Id).ToList();
+                persons.AddRange(temp);
+            }
+            return persons;
+        }
+
         public Person FindPersonForId(int id)
         {
             return Personnel.First(person => person.Id == id);
@@ -63,9 +74,9 @@ namespace Phonebook.CollectionModels
             Id = person.Id;
             FIO = person.Surname + ", " + person.Name + " " + person.SecondName;
             JobName = SplitString(person.JobName, 50);
-            DeptName = person.DeptName;
-            EnterpriseName = person.EnterpriseName;
-            Numbers = person.LandlineNumbers.Replace('*', '\n');
+            DeptName = person.DeptName;//SplitString(person.DeptName, 50);
+            EnterpriseName = SplitString(person.EnterpriseName, 100);
+            Numbers = person.LandlineNumbers;
         }
 
         private static string SplitString(string str, int strLength)

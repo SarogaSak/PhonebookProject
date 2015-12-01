@@ -19,6 +19,11 @@ namespace Phonebook
         {
             InitializeComponent();
 
+            buttonDelete.MouseLeave += MouseEvents.MouseLeave;
+            buttonDelete.MouseMove += MouseEvents.MouseMove;
+            buttonSave.MouseLeave += MouseEvents.MouseLeave;
+            buttonSave.MouseMove += MouseEvents.MouseMove;
+
             collectionJobs = new CollectionJobs();
             dataGridJob.ItemsSource = collectionJobs.SortedList();
         }

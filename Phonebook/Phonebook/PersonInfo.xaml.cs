@@ -28,9 +28,18 @@ namespace Phonebook
         private CollectionEnterprises collectionEnterprises;
         private CollectionDepts collectionDepts;
 
+        private bool isOpenJobsWindow = false;
+        private bool isOpenDeptsWindow = false;
+        private bool isOpenEnterprisesWindow = false;
+
         public PersonInfo(int accessLevel, Person person, CollectionEnterprises enterprises, CollectionDepts depts,CollectionJobs jobs)
         {
             InitializeComponent();
+
+            buttonDelete.MouseLeave += MouseEvents.MouseLeave;
+            buttonDelete.MouseMove += MouseEvents.MouseMove;
+            buttonSave.MouseLeave += MouseEvents.MouseLeave;
+            buttonSave.MouseMove += MouseEvents.MouseMove;
             ImagePath = AppDomain.CurrentDomain.BaseDirectory + @"Images\";
 
             this.person = person;
@@ -59,6 +68,9 @@ namespace Phonebook
                     textBoxMail.IsReadOnly = false;
                     image1.MouseDown += image1_MouseDown;
                     buttonSave.Visibility = Visibility.Visible;
+                    buttonOpenDeptsWindow.Visibility = Visibility.Visible;
+                    buttonOpenJobsWindow.Visibility = Visibility.Visible;
+                    buttonOpenEnterprisesWindow.Visibility =Visibility.Visible;
                     if (person.Id != 0) buttonDelete.Visibility = Visibility.Visible;
 
                     Height += 50;
@@ -235,16 +247,57 @@ namespace Phonebook
 
         private void buttonOpenJobsWindow_Click(object sender, RoutedEventArgs e)
         {
+            isOpenJobsWindow = true;
             new JobsWindow().Show();
+        }
+
+        private void buttonOpenDeptsWindow_Click(object sender, RoutedEventArgs e)
+        {
+            isOpenDeptsWindow = true;
+            new DeptsWindow().Show();
+        }
+
+        private void buttonOpenEnterprisesWindow_Click(object sender, RoutedEventArgs e)
+        {
+            isOpenEnterprisesWindow = true;
+            new EnterprisesWindow().Show();
         }
 
         private void Window_Activated(object sender, EventArgs e)
         {
-            collectionJobs=new CollectionJobs();
-            comboBoxJob.ItemsSource = collectionJobs.Jobs.OrderBy(job => job.Name).Select(job => job.Name);
+            if (isOpenJobsWindow)
+            {
+                collectionJobs = new CollectionJobs();
+                comboBoxJob.ItemsSource =
+                    collectionJobs.Jobs
+                        .OrderBy(job => job.Name)
+                        .Select(job => job.Name);
+                isOpenJobsWindow = false;
+            }
+            if (isOpenDeptsWindow)
+            {
+                collectionDepts = new CollectionDepts();
+                comboBoxDept.ItemsSource =
+                    collectionDepts.Depts
+                        .OrderBy(dept => dept.Name)
+                        .Select(dept => dept.Name);
+                isOpenDeptsWindow = false;
+            }
+            if (isOpenEnterprisesWindow)
+            {
+                collectionEnterprises = new CollectionEnterprises();
+                comboBoxEnterprise.ItemsSource =
+                    collectionEnterprises.Enterprises
+                        .OrderBy(enterprise => enterprise.Name)
+                        .Select(enterprise => enterprise.Name);
+                isOpenEnterprisesWindow = false;
+            }
+
             Topmost = true;
             Topmost = false;
             Focus();
         }
+
+
     }
 }

@@ -13,12 +13,12 @@
     <Grid>
         <TextBox Margin="12,13,0,0" Name="textBoxFIO" Width="397" Text="ФИО" GotFocus="textBoxFIO_GotFocus" LostFocus="textBoxFIO_LostFocus" Style="{StaticResource DefaultControlStyle}" />
         <ComboBox Margin="12,40,0,0" Name="comboBoxJob" Width="503" IsEditable="True" Text="Должность" GotFocus="comboBoxJob_GotFocus" LostFocus="comboBoxJob_LostFocus" KeyUp="comboBoxJob_KeyUp" KeyDown="comboBoxJob_KeyDown" IsTextSearchEnabled="False" Style="{StaticResource DefaultControlStyle}"/>
-        <ComboBox Margin="685,60,0,0" Name="comboBoxDept" Width="232" Style="{StaticResource DefaultControlStyle}" IsEditable="True" Text="Управление/Отдел" LostFocus="comboBoxDept_LostFocus" GotFocus="comboBoxDept_GotFocus" IsEnabled="False" />
+        <ComboBox Margin="12,94,0,0" Name="comboBoxDept" Width="503" Style="{StaticResource DefaultControlStyle}" IsEditable="True" Text="Управление/Отдел" LostFocus="comboBoxDept_LostFocus" GotFocus="comboBoxDept_GotFocus" IsEnabled="False" />
         <ComboBox Margin="12,67,0,0" Name="comboBoxEnterprise" Width="503" IsEditable="True" Text="Предприятие" KeyDown="comboBoxEnterprise_KeyDown" GotFocus="comboBoxEnterprise_GotFocus" LostFocus="comboBoxEnterprise_LostFocus" KeyUp="comboBoxEnterprise_KeyUp" IsTextSearchEnabled="False" Style="{StaticResource DefaultControlStyle}" SelectionChanged="comboBoxEnterprise_SelectionChanged" />
         <xctk:MaskedTextBox Margin="415,13,0,0" Width="100" Mask="Тел : 000-00-00" HorizontalContentAlignment="Right" Name="maskedtextBoxPhone" Style="{StaticResource DefaultControlStyle}"/>
-        <Label Content="Куратор :" Margin="12,91,0,0" Name="labelCurator" Width="105" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" FontSize="16" Foreground="#FFFFFCFC" />
-        <ComboBox Margin="96,97,0,0" Name="comboBoxCurator" Width="419" Style="{StaticResource DefaultControlStyle}" Foreground="Black" SelectionChanged="comboBoxCurator_SelectionChanged" />
-        <ListView Margin="12,133,12,12" Name="listViewResult" MouseDoubleClick="listViewResult_MouseDoubleClick" SelectionMode="Single" Foreground="Black" FontSize="16" FontWeight="Bold" Opacity="0.85" FontFamily="Times New Roman">
+        <Label Content="Куратор :" Margin="12,117,0,0" Name="labelCurator" Width="105" HorizontalAlignment="Left" VerticalAlignment="Top" Height="30" FontSize="16" Foreground="#FFFFFCFC" />
+        <ComboBox Margin="96,121,0,0" Name="comboBoxCurator" Width="419" Style="{StaticResource DefaultControlStyle}" Foreground="Black" SelectionChanged="comboBoxCurator_SelectionChanged" />
+        <ListView Margin="12,164,12,12" Name="listViewResult" MouseDoubleClick="listViewResult_MouseDoubleClick" SelectionMode="Single" Foreground="Black" FontSize="16" FontWeight="Bold" Opacity="0.85" FontFamily="Times New Roman">
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="ФИО" Width="280">
@@ -58,7 +58,7 @@
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate>
-                                        <Expander IsExpanded="False">
+                                        <Expander IsExpanded="True">
                                             <Expander.Header>
                                                 <StackPanel Orientation="Horizontal">
                                                     <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="Black" FontSize="20" VerticalAlignment="Bottom" TextDecorations="Underline"/>
@@ -88,45 +88,76 @@
             </ListView.GroupStyle>
                 
         </ListView>
-        <Image Margin="970,0,12,634" Name="image1" Stretch="Fill" Source="/Phonebook;component/Images/LoadScreen.png" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="127" Width="196" />
-        <Menu Height="25" HorizontalAlignment="Left" Margin="703,12,0,0" Name="menuEdit" VerticalAlignment="Top" Width="205" Background="{x:Null}">
-            <MenuItem Header="Редактировать справочники" FontSize="16" FontFamily="Times New Roman" Background="{x:Null}" Focusable="False" BorderBrush="#FF707070">
+        <Image Margin="934,0,48,634" Name="image1" Stretch="Fill" Source="/Phonebook;component/Images/LoadScreen.png" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Height="127" Width="196" />
+        <Menu Height="25" HorizontalAlignment="Left" Margin="723,0,0,0" Name="menuEdit" VerticalAlignment="Top" Width="205" Background="{x:Null}">
+            <MenuItem Header="Редактировать справочники" FontSize="14" FontFamily="Times New Roman" Background="{x:Null}" Focusable="False" BorderBrush="Red" Foreground="Black" FontWeight="Normal" BorderThickness="10">
                 <MenuItem Header="Должности" Click="MenuItemJob_Click" />
                 <MenuItem Header="Предприятия" Click="MenuItemEnterprise_Click" />
                 <MenuItem Header="Управления/отделы" Click="MenuItemDept_Click" />
                 <MenuItem Header="Кураторы" Click="MenuItemCurator_Click" />
                 <MenuItem Header="Добавить сотрудника" Click="MenuItemAdd_Click" />
+                <MenuItem Header="Изменить права доступа" Click="MenuItemUser_Click" />
             </MenuItem>
         </Menu>
-        <Button Content="Очистить" Height="36" Margin="521,41,0,0" Name="buttonClear" Width="122" Click="buttonClear_Click" FontSize="16" FontWeight="Bold" FontFamily="Times New Roman" Background="Red" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Top">
+        <Button Content="Очистить" Height="34" Margin="521,49,0,0" Name="buttonClear" Width="122" Click="buttonClear_Click" FontSize="16" FontWeight="Bold" FontFamily="Snap ITC" Background="{x:Null}" Foreground="White" HorizontalAlignment="Left" VerticalAlignment="Top" BorderBrush="White" BorderThickness="10">
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type Button}">
-                                <Border Background="{TemplateBinding Background}" BorderThickness="1" BorderBrush="#FF707070" CornerRadius="2">
+                                <Border Background="{TemplateBinding Background}" BorderThickness="2" BorderBrush="#FFFFFF" CornerRadius="2">
                                     <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 </Border>
                             </ControlTemplate>
                         </Setter.Value>
                     </Setter>
-                    <Style.Triggers>
-                        <Trigger Property="IsMouseOver" Value="True">
-                            <Setter Property="Background" Value="#FFC5F3F8"/>
-                        </Trigger>
-                    </Style.Triggers>
                 </Style>
             </Button.Style>
         </Button>
-        <Button Content="Поиск" Height="38" Margin="521,83,0,0" Name="buttonFind" Width="122" Click="buttonFind_Click" FontSize="16" FontWeight="Bold" Foreground="Black" FontFamily="Times New Roman" Focusable="False" BorderThickness="0,1,1,1" HorizontalAlignment="Left" VerticalAlignment="Top">
-        	<Button.Background>
-        		<LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
-        			<GradientStop Color="#FF767EFF" Offset="0"/>
-        			<GradientStop Color="#FFBFD1FF" Offset="1"/>
-        		</LinearGradientBrush>
-        	</Button.Background>
+        <Button Content="Поиск" Height="34" Margin="521,85,0,0" Name="buttonFind" Width="122" Click="buttonFind_Click" FontSize="16" FontWeight="Bold" Foreground="White" FontFamily="Snap ITC" Focusable="False" BorderThickness="10" HorizontalAlignment="Left" VerticalAlignment="Top" Background="{x:Null}" BorderBrush="White">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}" BorderThickness="2" BorderBrush="#FFFFFF" CornerRadius="2">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
         </Button>
-        <Button Content="Обновить" Height="25" HorizontalAlignment="Left" Margin="521,12,0,0" Name="buttonUpdate" VerticalAlignment="Top" Width="122" Click="buttonUpdate_Click" />
-        <Button Content="Export to Word" Height="26" HorizontalAlignment="Left" Margin="670,95,0,0" Name="buttonExport" VerticalAlignment="Top" Width="147" Click="buttonExport_Click" />
+        <Button Content="Обновить" Height="34" HorizontalAlignment="Left" Margin="521,13,0,0" Name="buttonUpdate" VerticalAlignment="Top" Width="122" Click="buttonUpdate_Click" FontFamily="Snap ITC" FontWeight="Bold" BorderThickness="10" Background="{x:Null}" BorderBrush="White" Foreground="White" FontSize="16">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}" BorderThickness="2" BorderBrush="#FFFFFF" CornerRadius="2">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
+        <Button Content="Export to Word" Height="24" HorizontalAlignment="Left" Margin="521,121,0,0" Name="buttonExport" VerticalAlignment="Top" Width="122" Click="buttonExport_Click" Background="{x:Null}" BorderBrush="White" Foreground="White" FontFamily="Trebuchet MS" FontWeight="Bold" BorderThickness="10">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}" BorderThickness="2" BorderBrush="#FFFFFF" CornerRadius="2">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
     </Grid>
 </Window>

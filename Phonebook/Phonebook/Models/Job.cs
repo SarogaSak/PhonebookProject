@@ -43,7 +43,6 @@
         /// <summary>
         /// Сравнивает переданный объект с текущим.
         /// </summary>
-        /// <param name="job"></param>
         public bool Equals(Job job)
         {
             return (Name.Equals(job.Name) && SortOrder == job.SortOrder);

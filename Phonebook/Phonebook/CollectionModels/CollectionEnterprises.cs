@@ -28,7 +28,6 @@ namespace Phonebook.CollectionModels
         public CollectionEnterprises()
         {
             Enterprises = blEnterprise.GetListData<List<Enterprise>>();
-            //Enterprises = SortedList();
         }
 
         /// <summary>
@@ -60,7 +59,7 @@ namespace Phonebook.CollectionModels
         }
 
         /// <summary>
-        /// Обновляет све записи в в таблице Enterprises значениями из коллекции.
+        /// Обновляет все записи в в таблице Enterprises значениями из коллекции.
         /// </summary>
         public void Update(CollectionEnterprises oldCollection)
         {
@@ -72,7 +71,7 @@ namespace Phonebook.CollectionModels
                 }
                 else
                 {
-                    if (!oldCollection.GetEnterprisesById(enterprise.Id).Equals(enterprise))
+                    if (!oldCollection.GetEnterpriseById(enterprise.Id).Equals(enterprise))
                     {
                         blEnterprise.UpdateData(enterprise);
                     }
@@ -80,7 +79,7 @@ namespace Phonebook.CollectionModels
             }
         }
 
-        private Enterprise GetEnterprisesById(int id)
+        private Enterprise GetEnterpriseById(int id)
         {
             return Enterprises.First(enterprise => enterprise.Id == id);
         }
@@ -100,7 +99,7 @@ namespace Phonebook.CollectionModels
         public void DeleteById(int id)
         {
             blEnterprise.DeleteData(id);
-            Enterprises.Remove(Enterprises.First(enterprise => enterprise.Id==id));
+            Enterprises.Remove(GetEnterpriseById(id));
         }
 
         /// <summary>

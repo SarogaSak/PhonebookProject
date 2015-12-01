@@ -1,12 +1,12 @@
-﻿<Window x:Class="Phonebook.CuratorsWindow"
+﻿<Window x:Class="Phonebook.EditWindows.UsersWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        Title="Кураторы" Height="416" Width="650">
+        Title="UsersWindow" Height="501" Width="759">
     <Window.Background>
         <ImageBrush ImageSource="/Phonebook;component/Images/InvBackground.jpg" />
     </Window.Background>
     <Grid>
-        <Button Content="Удалить куратора" Height="35" HorizontalAlignment="Left" Margin="373,334,0,0" Name="buttonDelete" VerticalAlignment="Top" Width="143" Click="buttonDelete_Click" BorderThickness="10" FontSize="14" FontFamily="Snap ITC" FontWeight="Bold" Background="{x:Null}" BorderBrush="White" Foreground="White">
+        <Button Content="Удалить" Height="37" HorizontalAlignment="Left" Margin="496,413,0,0" Name="buttonDelete" VerticalAlignment="Top" Width="123" Click="buttonDelete_Click" Background="{x:Null}" BorderBrush="White" Foreground="White" FontFamily="Snap ITC" FontWeight="Bold" FontSize="14" BorderThickness="10">
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
                     <Setter Property="Template">
@@ -21,7 +21,7 @@
                 </Style>
             </Button.Style>
         </Button>
-        <Button Content="Сохранить" Height="35" HorizontalAlignment="Right" Margin="0,334,18,0" Name="buttonSaveAll" VerticalAlignment="Top" Width="92" Click="buttonSaveAll_Click" Background="{x:Null}" BorderBrush="White" Foreground="White" FontFamily="Snap ITC" FontSize="14" FontWeight="Bold" BorderThickness="10">
+        <Button Content="Сохранить" Height="37" HorizontalAlignment="Left" Margin="625,413,0,0" Name="buttonSave" VerticalAlignment="Top" Width="103" Click="buttonSave_Click" Background="{x:Null}" BorderBrush="White" Foreground="White" FontFamily="Snap ITC" FontWeight="Bold" FontSize="14" BorderThickness="10">
             <Button.Style>
                 <Style TargetType="{x:Type Button}">
                     <Setter Property="Template">
@@ -36,24 +36,22 @@
                 </Style>
             </Button.Style>
         </Button>
-        <DataGrid Height="321" 
-                  HorizontalAlignment="Left" Name="dataGridCurator" 
+        <DataGrid Height="407" 
+                  HorizontalAlignment="Left" Name="dataGridUsers" 
                   VerticalAlignment="Top" 
-                  Width="628" 
+                  Width="728" 
                   CanUserSortColumns="True" 
                   FontSize="14" 
                   FontFamily="Times New Roman" AutoGenerateColumns="False">
             <DataGrid.Columns>
                 <DataGridTextColumn HeaderStyle="{StaticResource CenterGridHeaderStyle}" 
-                                    Header="ID" 
-                                    Binding="{Binding Id}" Width="30" IsReadOnly="True" CanUserResize="False" />
-                <DataGridTextColumn HeaderStyle="{StaticResource CenterGridHeaderStyle}" 
-                                    Header="ФИО" 
-                                    Binding="{Binding FIO}" Width="470" />
+                                    Header="Имя пользователя" 
+                                    Binding="{Binding Name}" Width="500" 
+                                    IsReadOnly="True" CanUserResize="False"/>
                 <DataGridTextColumn HeaderStyle="{StaticResource CenterGridHeaderStyle}" 
                                     CellStyle="{StaticResource RightGridTextStyle}"
-                                    Header="  Порядок&#x000A;сортировки" 
-                                    Binding="{Binding SortOrder}" Width="100" />
+                                    Header="  Уровень доступа" 
+                                    Binding="{Binding AccessLevel}" Width="200" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

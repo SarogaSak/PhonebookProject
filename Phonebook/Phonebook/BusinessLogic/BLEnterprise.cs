@@ -57,7 +57,7 @@ namespace Phonebook.BusinessLogic
         }
 
         /// <summary>
-        /// Добавляет пустую запись в таблицу Enterprises и возвращает Id этой записи.
+        /// Добавляет пустую запись в таблицу Enterprises.
         /// </summary>
         /// <param name="model">Предприятие.</param>
         public override void InsertData<T>(T model)
@@ -65,7 +65,7 @@ namespace Phonebook.BusinessLogic
             var enterprise = (Enterprise) (object) model;
             string insertString =
                 string.Format(
-                    "insert into Enterprises (Name, Address, SortOrder, IdCurator) values('{0}','{1}',{2}),{3}",
+                    "insert into Enterprises (Name, Address, SortOrder, IdCurator) values('{0}','{1}',{2},{3})",
                     enterprise.Name, enterprise.Address, enterprise.SortOrder, enterprise.IdCurator);
             SendQuery(insertString);
         }

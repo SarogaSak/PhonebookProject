@@ -2,11 +2,11 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         WindowStartupLocation="CenterScreen"
-        Title="Информация о сотруднике" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Height="372" Width="804" Loaded="Window_Loaded" ResizeMode="NoResize" Icon="/Phonebook;component/ico.ico">
+        Title="Информация о сотруднике" mc:Ignorable="d" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" Height="372" Width="873" Loaded="Window_Loaded" ResizeMode="NoResize" Icon="/Phonebook;component/ico.ico">
     <Window.Resources>
         <Style x:Key="PersonInfoDefaultControlStyle" TargetType="Control">
             <Setter Property="Height" Value="24" />
-            <Setter Property="Width" Value="440" />
+            <Setter Property="Width" Value="490" />
             <Setter Property="FontSize" Value="14" />
             <Setter Property="FontFamily" Value="Times New Roman" />
             <Setter Property="FontWeight" Value="Bold" />
@@ -14,44 +14,67 @@
             <Setter Property="VerticalAlignment" Value="Top" />
             <Setter Property="HorizontalAlignment" Value="Left" />
         </Style>
+        <Style x:Key="AddControlStyle" TargetType="Control">
+            <Setter Property="Height" Value="24" />
+            <Setter Property="Width" Value="26" />
+            <Setter Property="HorizontalAlignment" Value="Left" />
+            <Setter Property="VerticalAlignment" Value="Top" />
+            <Setter Property="FontSize" Value="16" />
+            <Setter Property="FontWeight" Value="Bold" />
+            <Setter Property="Visibility" Value="Hidden" />
+        </Style>
     </Window.Resources>
     <Window.Background>
-        <ImageBrush ImageSource="/Phonebook;component/Images/1mVZTzYITo81.jpg" />
+        <ImageBrush ImageSource="/Phonebook;component/Images/InvBackground.jpg" />
     </Window.Background>
-    <Grid Width="784">
-        <Image Height="150" Width="180" HorizontalAlignment="Left" Margin="18,12,0,0" Name="image1" VerticalAlignment="Top" Stretch="Fill">
+    <Grid Width="851">
+        <Image Height="266" Width="180" HorizontalAlignment="Left" Margin="18,12,0,0" Name="image1" VerticalAlignment="Top" Stretch="Uniform">
             <Image.Effect>
                 <DropShadowEffect Opacity="0.7" BlurRadius="20" />
             </Image.Effect>
         </Image>
-        <TextBox Margin="222,28,0,0" Name="textBoxFIO"  IsReadOnly="True" Style="{StaticResource PersonInfoDefaultControlStyle}"/>
-        <ComboBox Margin="222,58,0,0" Name="comboBoxJob" IsEditable="True" IsReadOnly="True" IsEnabled="False" Style="{StaticResource PersonInfoDefaultControlStyle}"/>
-        <ComboBox Margin="222,88,0,0" Name="comboBoxEnterprise" IsReadOnly="True" IsEditable="True" SelectionChanged="comboBoxEnterprise_SelectionChanged" IsEnabled="False" Style="{StaticResource PersonInfoDefaultControlStyle}"/>
-        <ComboBox Margin="222,117,0,0" Name="comboBoxDept" IsEditable="True" IsEnabled="False" Style="{StaticResource PersonInfoDefaultControlStyle}"/>
-        <TextBox Margin="222,147,0,0" Name="textBoxAddress" IsReadOnly="True" Style="{StaticResource PersonInfoDefaultControlStyle}"/>
-        <GroupBox Header="Городской" Height="104" HorizontalAlignment="Left" Margin="232,175,0,0" Name="groupBoxLandline" VerticalAlignment="Top" Width="145" FontSize="14" FontFamily="Times New Roman">
+        <TextBox Margin="319,34,0,0" Name="textBoxFIO"  IsReadOnly="True" Style="{StaticResource PersonInfoDefaultControlStyle}" />
+        <ComboBox Margin="319,112,0,0" Name="comboBoxJob" IsEditable="True" IsReadOnly="True" IsEnabled="False" Style="{StaticResource PersonInfoDefaultControlStyle}" />
+        <ComboBox Margin="319,60,0,0" Name="comboBoxEnterprise" IsReadOnly="True" IsEditable="True" SelectionChanged="comboBoxEnterprise_SelectionChanged" IsEnabled="False" Style="{StaticResource PersonInfoDefaultControlStyle}" />
+        <ComboBox Margin="319,86,0,0" Name="comboBoxDept" IsEditable="True" IsEnabled="False" Style="{StaticResource PersonInfoDefaultControlStyle}" IsReadOnly="True" />
+        <TextBox Margin="319,138,0,0" Name="textBoxAddress" IsReadOnly="True" Style="{StaticResource PersonInfoDefaultControlStyle}" />
+        <GroupBox Header="Городской" Height="104" HorizontalAlignment="Left" Margin="444,174,0,0" Name="groupBoxLandline" VerticalAlignment="Top" Width="145" FontSize="14" FontFamily="Times New Roman" Foreground="White">
             <Grid>
                 <TextBox Name="textBoxLandline" TextWrapping="Wrap" IsReadOnly="True" AcceptsReturn="True" />
                </Grid>
         </GroupBox>
         
-        <GroupBox Header="Мобильный" Height="104" HorizontalAlignment="Left" Margin="383,175,0,0" Name="groupBoxMobile" VerticalAlignment="Top" Width="146" Visibility="Hidden" FontSize="14" FontFamily="Times New Roman">
+        <GroupBox Header="Мобильный" Height="104" HorizontalAlignment="Left" Margin="595,174,0,0" Name="groupBoxMobile" VerticalAlignment="Top" Width="146" Visibility="Hidden" FontSize="14" FontFamily="Times New Roman" Foreground="White">
             <Grid>
                 <TextBox Name="textBoxMobile" TextWrapping="Wrap" IsReadOnly="True" AcceptsReturn="True" />
             </Grid>
         </GroupBox>
-        <GroupBox Header="Спец. связь" Height="104" HorizontalAlignment="Left" Margin="537,175,0,0" Name="groupBoxInternal" VerticalAlignment="Top" Width="122" Visibility="Hidden" FontSize="14" FontFamily="Times New Roman">
+        <GroupBox Header="Спец. связь" Height="104" HorizontalAlignment="Left" Margin="749,174,0,0" Name="groupBoxInternal" VerticalAlignment="Top" Width="90" Visibility="Hidden" FontSize="14" FontFamily="Times New Roman" Foreground="White">
             <Grid>
                 <TextBox Name="textBoxInternal" TextWrapping="Wrap" IsReadOnly="True" AcceptsReturn="True" />
             </Grid>
         </GroupBox>
-        <GroupBox  FontSize="14" Header="E-Mail" Height="104" HorizontalAlignment="Left" Margin="12,175,0,0" Name="groupBoxMail" VerticalAlignment="Top" Width="214" Foreground="White">
+        <GroupBox  FontSize="14" Header="E-Mail" Height="104" HorizontalAlignment="Left" Margin="224,174,0,0" Name="groupBoxMail" VerticalAlignment="Top" Width="214" Foreground="Black">
             <Grid>
                 <TextBox IsReadOnly="True" Name="textBoxMail" TextWrapping="Wrap" AcceptsReturn="True" />
             </Grid>
         </GroupBox>
-        <Button Content="Сохранить" Height="45" HorizontalAlignment="Left" Margin="557,282,0,0" Name="buttonSave" VerticalAlignment="Top" Width="102" Click="buttonSave_Click" Visibility="Hidden" FontFamily="Times New Roman" FontSize="14" FontWeight="Bold" Grid.ColumnSpan="2" Background="#FF9AEEFF" />
-        <Button  Height="45" HorizontalAlignment="Left" Margin="448,282,0,0" Name="buttonDelete" VerticalAlignment="Top" Width="102" Click="buttonDelete_Click" Visibility="Hidden" FontSize="14" FontFamily="Times New Roman" Foreground="White" Background="Red">
+        <Button Content="Сохранить" Height="45" HorizontalAlignment="Left" Margin="737,288,0,0" Name="buttonSave" VerticalAlignment="Top" Width="102" Click="buttonSave_Click" Visibility="Hidden" FontFamily="Snap ITC" FontSize="14" FontWeight="Bold" Background="{x:Null}" BorderThickness="10" BorderBrush="White" Foreground="White">
+            <Button.Style>
+                <Style TargetType="{x:Type Button}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="{TemplateBinding Background}" BorderThickness="2" BorderBrush="#FFFFFF" CornerRadius="2">
+                                    <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </Button.Style>
+        </Button>
+        <Button  Height="45" HorizontalAlignment="Left" Margin="633,288,0,0" Name="buttonDelete" VerticalAlignment="Top" Width="102" Click="buttonDelete_Click" Visibility="Hidden" FontSize="12" FontFamily="Snap ITC" Foreground="White" Background="{x:Null}" BorderBrush="White" FontWeight="Bold" BorderThickness="10">
             <StackPanel Orientation="Horizontal" Height="45">
                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Height="35" Width="93" TextAlignment="Center" TextWrapping="Wrap" FontWeight="Bold">Удалить&#x000A;сотрудника</TextBlock>
             </StackPanel>
@@ -60,7 +83,7 @@
                     <Setter Property="Template">
                         <Setter.Value>
                             <ControlTemplate TargetType="{x:Type Button}">
-                                <Border Background="{TemplateBinding Background}" BorderThickness="1" BorderBrush="#FF707070" CornerRadius="2">
+                                <Border Background="{TemplateBinding Background}" BorderThickness="2" BorderBrush="#FFFFFF" CornerRadius="2">
                                     <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                 </Border>
                             </ControlTemplate>
@@ -74,6 +97,13 @@
                 </Style>
             </Button.Style>
         </Button>
-        <Button Content="+" Height="24" HorizontalAlignment="Right" Margin="0,58,92,0" Name="buttonOpenJobsWindow" VerticalAlignment="Top" Width="24" FontSize="14" Click="buttonOpenJobsWindow_Click" />
+        <Button Content="+" Margin="813,112,0,0" Name="buttonOpenJobsWindow" Click="buttonOpenJobsWindow_Click" Style="{StaticResource AddControlStyle}" />
+        <Button Content="+" Margin="813,86,0,0" Name="buttonOpenDeptsWindow"  Click="buttonOpenDeptsWindow_Click" Style="{StaticResource AddControlStyle}" />
+        <Button Content="+" Margin="813,60,0,0" Name="buttonOpenEnterprisesWindow"  Click="buttonOpenEnterprisesWindow_Click" Style="{StaticResource AddControlStyle}" />
+        <Label Content="ФИО:" Height="24" HorizontalAlignment="Left" Margin="279,34,0,0" Name="label1" VerticalAlignment="Top" FontFamily="Segoe UI" FontWeight="Normal" FontSize="12" FontStyle="Normal" Foreground="Black" Padding="4" />
+        <Label Content="Предприятие:" Height="24" HorizontalAlignment="Left" Margin="234,60,0,0" Name="label2" VerticalAlignment="Top" FontFamily="Segoe UI" FontWeight="Normal" FontSize="12" FontStyle="Normal" Foreground="Black" Padding="4" />
+        <Label Content="Отдел/Управление:" Height="24" HorizontalAlignment="Left" Margin="204,86,0,0" Name="label3" VerticalAlignment="Top" FontFamily="Segoe UI" FontWeight="Normal" FontSize="12" FontStyle="Normal" Foreground="Black" Padding="4" />
+        <Label Content="Должность:" Height="24" HorizontalAlignment="Left" Margin="246,112,0,0" Name="label4" VerticalAlignment="Top" FontFamily="Segoe UI" FontWeight="Normal" FontSize="12" FontStyle="Normal" Foreground="Black" Padding="4" />
+        <Label Content="Адрес:" Height="24" HorizontalAlignment="Left" Margin="274,138,0,0" Name="label5" VerticalAlignment="Top" FontFamily="Segoe UI" FontWeight="Normal" FontSize="12" FontStyle="Normal" Foreground="Black" Padding="4" />
     </Grid>
 </Window>

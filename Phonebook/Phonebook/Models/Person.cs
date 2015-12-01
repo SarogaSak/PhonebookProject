@@ -55,10 +55,15 @@
         /// </summary>
         public string CellNumbers { get; set; }
 
+        private string _landlineNumbers;
         /// <summary>
         /// Городские номера, хранятся через разделитель *.
         /// </summary>
-        public string LandlineNumbers { get; set; }
+        public string LandlineNumbers
+        {
+            get { return _landlineNumbers.Replace('*', '\n'); }
+            set { _landlineNumbers = value.Replace('\n', '*'); }
+        }
 
         /// <summary>
         /// Вертушка, хранятся через разделитель *.
@@ -130,6 +135,11 @@
             InternalNumbers = "";
             Photo = "";
             Email = "";
+        }
+
+        public string GetFIO()
+        {
+            return Surname + " " + Name + " " + SecondName;
         }
     }
 }
